@@ -71,7 +71,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-row style="height: calc(70% - 110px)">
+    <el-row style="height: calc(70% - 150px)">
       <el-table
         :cell-class-name="tableRowClassName"
         :data="tableList"
@@ -86,7 +86,7 @@
         :cell-style="{ padding: '5px' }"
         style="width: 100%; height: 100%"
         ref="table"
-        @row-dbclick="onRowDbclick"
+        @row-click="onRowDbclick"
       >
         <!-- <el-table-column type="index" align="center" label="序号">
             <template slot-scope="scope">
@@ -100,56 +100,68 @@
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="BillNO"
+          prop="billNO"
           label="单号"
           show-overflow-tooltip
-          width="100"
+          width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="StartStation"
+          prop="startStation"
           label="起运站"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="EndStation"
+          prop="endStation"
           label="目的站"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="Line"
+          prop="lineName"
           label="所属路线"
           show-overflow-tooltip
           width="80"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="EffectiveSTime"
+          prop="effectiveSTime"
           label="有效时间起"
           show-overflow-tooltip
-          width="120"
-        ></el-table-column>
+          width="165"
+        >
+          <template slot-scope="scope">
+            {{
+              scope.row.effectiveSTime | parseTime("{y}-{m}-{d} {h}:{i}:{s}")
+            }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          prop="EffectiveETime"
+          prop="effectiveETime"
           label="有效时间止"
           show-overflow-tooltip
-          width="120"
-        ></el-table-column>
+          width="165"
+        >
+          <template slot-scope="scope">
+            {{
+              scope.row.effectiveETime | parseTime("{y}-{m}-{d} {h}:{i}:{s}")
+            }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          prop="HopePrice"
+          prop="hopePrice"
           label="期望成交价"
           show-overflow-tooltip
           width="190"
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
-          prop="IsEnable"
+          prop="isEnable"
           label="是否启用"
           show-overflow-tooltip
           width="120"
@@ -160,7 +172,7 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="IsVerify"
+          prop="isVerify"
           label="是否审核"
           show-overflow-tooltip
           width="120"
@@ -171,10 +183,17 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="VerifyRem"
+          prop="verifyRem"
           label="审核评语"
           show-overflow-tooltip
           width="80"
+        ></el-table-column> -->
+        <el-table-column
+          align="center"
+          prop="remarks"
+          label="备注"
+          show-overflow-tooltip
+          min-width="80"
         ></el-table-column>
         <el-table-column align="center" label="操作" width="140px">
           <template slot-scope="scope">
@@ -188,7 +207,7 @@
             </div>
             <div
               class="tableBtn"
-              @click="openUpdateUserComp(scope.row)"
+              @click="openInfoComp(scope.row)"
               v-if="search.IsVerify"
             >
               详情
@@ -209,7 +228,7 @@
       </el-pagination>
     </el-row>
     <el-row style="height: calc(30%)">
-      <Box-Details ref="boxDetailsComp" style="margin-top: 30px"></Box-Details>
+      <Box-Details ref="boxDetailsComp" style="margin-top: 50px"></Box-Details>
     </el-row>
     <Tenant-Release
       ref="createTenantComp"
@@ -321,6 +340,7 @@ export default {
               this.$set(item, "pop1Show", false);
             });
             this.page.total = res.result.totalCount;
+            this.$refs.boxDetailsComp.tableList = [];
           }
         })
         .catch((err) => {
@@ -332,6 +352,14 @@ export default {
       this.createTenantComp.show = true;
       this.$refs.createTenantComp.pageType = "update";
       this.$refs.createTenantComp.getTenantReleaseInfoById(row.id);
+      this.$refs.createTenantComp.getfileList(row.id);
+    },
+    //打开修改箱东信息窗口
+    openInfoComp(row) {
+      this.createTenantComp.show = true;
+      this.$refs.createTenantComp.pageType = "info";
+      this.$refs.createTenantComp.getTenantReleaseInfoById(row.id);
+      this.$refs.createTenantComp.getfileList(row.id);
     },
     oncreateTenantCompShowChange(val) {
       this.createTenantComp.show = val;
@@ -362,7 +390,7 @@ export default {
       this.treeComp.show = val;
     },
     onRowDbclick(row, column, event) {
-      this.$refs.boxDetailsComp.search.BoxTenantId = row.Id;
+      this.$refs.boxDetailsComp.search.BoxTenantNO = row.billNO;
       this.$refs.boxDetailsComp.getTableList();
     },
   },

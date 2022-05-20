@@ -1,11 +1,11 @@
 <template>
-  <div class="app-container country">
+  <div class="app-container line">
     <el-form size="mini" @submit.native.prevent>
       <el-row style="margin-bottom: 10px">
         <el-col :span="4">
           <el-form-item label="代码：" style="padding-left: 15px">
             <el-input
-              placeholder="国家代码"
+              placeholder="路线代码"
               style="width: 70%"
               v-model="search.code"
               size="mini"
@@ -18,9 +18,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="国家名称：">
+          <el-form-item label="路线名称：">
             <el-input
-              placeholder="国家名称"
+              placeholder="路线名称"
               style="width: 70%"
               v-model="search.name"
               size="mini"
@@ -43,7 +43,7 @@
               "
               >搜索</el-button
             >
-            <el-button type="primary" size="mini" @click="openAddCountryComp"
+            <el-button type="primary" size="mini" @click="openAddLineComp"
               >新增</el-button
             >
             <el-button type="primary" size="mini" @click="onBatchDelete"
@@ -54,11 +54,11 @@
       </el-row>
     </el-form>
 
-    <el-row class="country-tableRow">
+    <el-row class="line-tableRow">
       <el-table
         :cell-class-name="tableRowClassName"
         v-loading="table.loading"
-        :data="countryList"
+        :data="lineList"
         :row-key="getRowKeys"
         @selection-change="onSelectChange"
         border
@@ -78,19 +78,19 @@
         <el-table-column type="index" align="center" label="序号" width="50">
           <template slot-scope="scope">{{ countIndex(scope.$index) }}</template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           prop="code"
           sortable="custom"
-          label="国家代码"
+          label="路线代码"
           min-width="6%"
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           align="center"
-          prop="name"
+          prop="lineName"
           sortable="custom"
           show-overflow-tooltip
-          label="国家名称"
+          label="路线名称"
           min-width="9%"
         ></el-table-column>
         <el-table-column
@@ -115,7 +115,7 @@
         ></el-table-column>
         <el-table-column align="center" label="操作" min-width="7%">
           <template slot-scope="scope">
-            <div class="tableBtn" @click="openUpdateCountryComp(scope.row)">
+            <div class="tableBtn" @click="openUpdateLineComp(scope.row)">
               编辑
             </div>
             <el-popover placement="top" width="160" v-model="scope.row.popShow">
@@ -130,7 +130,7 @@
                 <el-button
                   type="danger"
                   size="mini"
-                  @click="deleteSingleCountry(scope.row.id)"
+                  @click="deleteSingleLine(scope.row.id)"
                   >删除</el-button
                 >
               </div>
@@ -150,18 +150,18 @@
         layout="total, sizes, prev, pager, next, jumper"
       ></el-pagination>
     </el-row>
-    <create-country
-      ref="createCountryComp"
-      :pshow="createCountryComp.show"
-      @on-show-change="oncreateCountryCompShowChange"
+    <create-line
+      ref="createLineComp"
+      :pshow="createLineComp.show"
+      @on-show-change="oncreateLineCompShowChange"
       @on-save-success="onSaveSuccess"
-    ></create-country>
+    ></create-line>
   </div>
 </template>
 <style lang="scss">
-.country {
+.line {
   height: 100%;
-  .country-tableRow {
+  .line-tableRow {
     height: calc(100% - 130px);
     .el-table__body-wrapper {
       height: calc(100% - 51px) !important;
@@ -171,23 +171,20 @@
 </style>
 <script>
 import { tableMixin } from "mixin/commTable";
-import {
-  getAllCountryList,
-  deleteBatchCountry,
-} from "api/publicBase/baseCountry";
+import { getAllLineList, deleteBatchLine } from "api/publicBase/line";
 import { Server } from "net";
-import createCountry from "./createCountry";
-//import {checkBtnPeimission,countryPage} from 'utils/btnRole'
+import createLine from "./createLine";
+//import {checkBtnPeimission,linePage} from 'utils/btnRole'
 import { warnMsg } from "utils/messageBox";
 export default {
-  name: "countryIndex",
-  components: { createCountry },
+  name: "lineIndex",
+  components: { "create-line": createLine },
   mixins: [tableMixin],
   data() {
     return {
-      //countryPage,
-      countryList: [],
-      createCountryComp: {
+      //linePage,
+      lineList: [],
+      createLineComp: {
         show: false,
       },
       search: {
@@ -201,7 +198,7 @@ export default {
     getRowKeys(row) {
       return row.id.toString();
     },
-    //获取国家列表
+    //获取路线列表
     getTableList() {
       console.log(this.search.continent);
       this.tableData = [];
@@ -214,36 +211,36 @@ export default {
         sorting: this.table.order.sort,
       };
 
-      getAllCountryList(data).then((res) => {
+      getAllLineList(data).then((res) => {
         this.table.loading = false;
         if (res.success) {
-          this.countryList = res.result.items;
-          this.countryList.forEach((item) => {
+          this.lineList = res.result.items;
+          this.lineList.forEach((item) => {
             this.$set(item, "popShow", false);
           });
           this.page.total = res.result.totalCount;
         }
       });
     },
-    //删除单个国家
-    deleteSingleCountry(id) {
-      deleteBatchCountry([id]).then((res) => {
+    //删除单个路线
+    deleteSingleLine(id) {
+      deleteBatchLine([id]).then((res) => {
         this.batchDeleteSearch();
       });
     },
-    //打开新增国家窗口
-    openAddCountryComp() {
-      this.createCountryComp.show = true;
+    //打开新增路线窗口
+    openAddLineComp() {
+      this.createLineComp.show = true;
     },
-    //打开编辑国家窗口
-    openUpdateCountryComp(row) {
-      this.createCountryComp.show = true;
-      this.$refs.createCountryComp.getCountryInfoById(row.id);
+    //打开编辑路线窗口
+    openUpdateLineComp(row) {
+      this.createLineComp.show = true;
+      this.$refs.createLineComp.getLineInfoById(row.id);
     },
     //批量删除
     onBatchDelete() {
       if (this.table.choosedRow.length === 0) {
-        warnMsg("请选择要删除的国家");
+        warnMsg("请选择要删除的路线");
         return;
       }
       this.$confirm("是否确定删除", "提示", {
@@ -252,7 +249,7 @@ export default {
         type: "warning",
       }).then(({ value }) => {
         let arr = this.table.choosedRow.map((item) => item.id);
-        deleteBatchCountry(arr).then((res) => {
+        deleteBatchLine(arr).then((res) => {
           this.$refs.table.clearSelection();
           this.batchDeleteSearch();
         });
@@ -265,8 +262,8 @@ export default {
     //   if (param.order === "descending") ss = param.prop + " desc"
     //   this.getTableList(ss)
     // },
-    oncreateCountryCompShowChange(val) {
-      this.createCountryComp.show = val;
+    oncreateLineCompShowChange(val) {
+      this.createLineComp.show = val;
     },
     //新增或编辑用户成功事件
     onSaveSuccess() {

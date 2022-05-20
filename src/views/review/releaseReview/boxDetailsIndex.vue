@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container userMng">
+  <div class="boxDetails">
     <el-row style="height: calc(100%)">
       <el-table
         :cell-class-name="tableRowClassName"
@@ -26,44 +26,44 @@
           type="selection"
           width="50"
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
-          prop="BoxTenantInfo"
+          prop="boxTenantInfo"
           label="箱东信息"
           show-overflow-tooltip
           width="100"
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           align="center"
-          prop="Box"
+          prop="box"
           label="箱型"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="Size"
+          prop="size"
           label="尺寸"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="Quantity"
+          prop="quantity"
           label="箱量"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="BoxNO"
+          prop="boxNO"
           label="箱号"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="BoxAge"
+          prop="boxAge"
           label="箱龄"
           show-overflow-tooltip
           width="200"
@@ -91,33 +91,8 @@
   </div>
 </template>
 <style lang="scss">
-.userMng {
-  .chsEqp {
-    width: 100%;
-    .textPromt {
-      float: left;
-    }
-    .chsEqp-select {
-      height: 26px;
-      line-height: 24px;
-    }
-    i {
-      float: right;
-      margin-top: 6px;
-    }
-  }
-  .editOrgComp-row-tree {
-    position: absolute;
-    top: 40px;
-    left: 70px;
-    background-color: #fff;
-    z-index: 10;
-    padding: 0;
-    margin: 0;
-    width: 300px;
-    height: 450px;
-    clear: both;
-  }
+.boxDetails {
+  height: 100%;
 }
 </style>
 <script>
@@ -128,7 +103,7 @@ import treeSelect from "components/treeSelect/treeSelect";
 import tree from "components/tree/tree";
 import { checkBtnPeimission, RegisterReview } from "utils/btnRole";
 export default {
-  name: "boxReleaseReviewIndex",
+  name: "boxDetailsIndex",
   mixins: [tableMixin],
   components: {
     treeSelect,
@@ -146,7 +121,7 @@ export default {
       search: {
         name: "",
         IsVerify: false,
-        boxTenantId: "",
+        BoxTenantNO: "",
       },
       isVerifys: [
         { name: "未审核", val: false },
@@ -170,7 +145,7 @@ export default {
         maxResultCount: this.page.pageSize,
         skipCount: (this.page.currentPage - 1) * this.page.pageSize,
         filter: "",
-        boxTenantId: this.search.BoxTenantId,
+        boxTenantNO: this.search.BoxTenantNO,
       };
 
       this.tableData = [];
@@ -218,7 +193,7 @@ export default {
     },
   },
   created() {
-    this.getTableList();
+    //this.getTableList();
     this.search.IsVerify = false;
   },
 };

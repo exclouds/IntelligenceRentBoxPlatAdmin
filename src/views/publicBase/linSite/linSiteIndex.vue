@@ -1,35 +1,17 @@
 <template>
-  <div class="app-container country">
+  <div class="app-container linSite">
     <el-form size="mini" @submit.native.prevent>
       <el-row style="margin-bottom: 10px">
         <el-col :span="4">
-          <el-form-item label="代码：" style="padding-left: 15px">
-            <el-input
-              placeholder="国家代码"
-              style="width: 70%"
-              v-model="search.code"
-              size="mini"
-              @keyup.enter.native="
-                onSearchBefore();
-                getTableList();
-              "
-              clearable
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4">
-          <el-form-item label="国家名称：">
-            <el-input
-              placeholder="国家名称"
-              style="width: 70%"
-              v-model="search.name"
-              size="mini"
-              @keyup.enter.native="
-                onSearchBefore();
-                getTableList();
-              "
-              clearable
-            ></el-input>
+          <el-form-item label="站点：" style="padding-left: 15px">
+            <el-select v-model="search.code" collapse-tags placeholder="站点">
+              <el-option
+                v-for="item in ZDs"
+                :key="item.value"
+                :label="item.displayText"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -43,7 +25,7 @@
               "
               >搜索</el-button
             >
-            <el-button type="primary" size="mini" @click="openAddCountryComp"
+            <el-button type="primary" size="mini" @click="openAddLinSiteComp"
               >新增</el-button
             >
             <el-button type="primary" size="mini" @click="onBatchDelete"
@@ -54,11 +36,11 @@
       </el-row>
     </el-form>
 
-    <el-row class="country-tableRow">
+    <el-row class="linSite-tableRow">
       <el-table
         :cell-class-name="tableRowClassName"
         v-loading="table.loading"
-        :data="countryList"
+        :data="linSiteList"
         :row-key="getRowKeys"
         @selection-change="onSelectChange"
         border
@@ -82,29 +64,17 @@
           align="center"
           prop="code"
           sortable="custom"
-          label="国家代码"
+          label="站点"
           min-width="6%"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="name"
+          prop="lineId"
           sortable="custom"
           show-overflow-tooltip
-          label="国家名称"
+          label="路线"
           min-width="9%"
         ></el-table-column>
-        <el-table-column
-          align="center"
-          prop="isEnable"
-          sortable="custom"
-          show-overflow-tooltip
-          label="是否启用"
-          min-width="10%"
-        >
-          <template slot-scope="scope">
-            {{ scope.row.isEnable ? "是" : "否" }}
-          </template>
-        </el-table-column>
         <el-table-column
           align="center"
           prop="remarks"
@@ -115,7 +85,7 @@
         ></el-table-column>
         <el-table-column align="center" label="操作" min-width="7%">
           <template slot-scope="scope">
-            <div class="tableBtn" @click="openUpdateCountryComp(scope.row)">
+            <div class="tableBtn" @click="openUpdateLinSiteComp(scope.row)">
               编辑
             </div>
             <el-popover placement="top" width="160" v-model="scope.row.popShow">
@@ -130,7 +100,7 @@
                 <el-button
                   type="danger"
                   size="mini"
-                  @click="deleteSingleCountry(scope.row.id)"
+                  @click="deleteSingleLinSite(scope.row.id)"
                   >删除</el-button
                 >
               </div>
@@ -150,18 +120,18 @@
         layout="total, sizes, prev, pager, next, jumper"
       ></el-pagination>
     </el-row>
-    <create-country
-      ref="createCountryComp"
-      :pshow="createCountryComp.show"
-      @on-show-change="oncreateCountryCompShowChange"
+    <create-linSite
+      ref="createLinSiteComp"
+      :pshow="createLinSiteComp.show"
+      @on-show-change="oncreateLinSiteCompShowChange"
       @on-save-success="onSaveSuccess"
-    ></create-country>
+    ></create-linSite>
   </div>
 </template>
 <style lang="scss">
-.country {
+.linSite {
   height: 100%;
-  .country-tableRow {
+  .linSite-tableRow {
     height: calc(100% - 130px);
     .el-table__body-wrapper {
       height: calc(100% - 51px) !important;
@@ -171,79 +141,85 @@
 </style>
 <script>
 import { tableMixin } from "mixin/commTable";
-import {
-  getAllCountryList,
-  deleteBatchCountry,
-} from "api/publicBase/baseCountry";
+import { getAllLinSiteList, deleteBatchLinSite } from "api/publicBase/linSite";
 import { Server } from "net";
-import createCountry from "./createCountry";
-//import {checkBtnPeimission,countryPage} from 'utils/btnRole'
+import createLinSite from "./createLinSite";
+//import {checkBtnPeimission,linSitePage} from 'utils/btnRole'
+import { getSiteList } from "api/publicBase/Combox";
 import { warnMsg } from "utils/messageBox";
 export default {
-  name: "countryIndex",
-  components: { createCountry },
+  name: "linSiteIndex",
+  components: { "create-linSite": createLinSite },
   mixins: [tableMixin],
   data() {
     return {
-      //countryPage,
-      countryList: [],
-      createCountryComp: {
+      //linSitePage,
+      linSiteList: [],
+      createLinSiteComp: {
         show: false,
       },
       search: {
         code: "",
         name: "",
       },
+      ZDs: [],
     };
   },
   methods: {
     //checkBtnPeimission,
+    setComBox() {
+      getSiteList({
+        CountryCode: "",
+        IsEnable: true,
+      }).then((res) => {
+        this.ZDs = res.result;
+      });
+    },
     getRowKeys(row) {
       return row.id.toString();
     },
-    //获取国家列表
+    //获取路线列表
     getTableList() {
-      console.log(this.search.continent);
       this.tableData = [];
       this.table.loading = true;
       let data = {
         code: this.search.code,
-        filter: this.search.name,
+        filter: "",
         maxResultCount: this.page.pageSize,
         skipCount: (this.page.currentPage - 1) * this.page.pageSize,
         sorting: this.table.order.sort,
       };
 
-      getAllCountryList(data).then((res) => {
+      getAllLinSiteList(data).then((res) => {
         this.table.loading = false;
         if (res.success) {
-          this.countryList = res.result.items;
-          this.countryList.forEach((item) => {
+          this.linSiteList = res.result.items;
+          this.linSiteList.forEach((item) => {
             this.$set(item, "popShow", false);
           });
           this.page.total = res.result.totalCount;
         }
       });
     },
-    //删除单个国家
-    deleteSingleCountry(id) {
-      deleteBatchCountry([id]).then((res) => {
+    //删除单个路线
+    deleteSingleLinSite(id) {
+      deleteBatchLinSite([id]).then((res) => {
         this.batchDeleteSearch();
       });
     },
-    //打开新增国家窗口
-    openAddCountryComp() {
-      this.createCountryComp.show = true;
+    //打开新增路线窗口
+    openAddLinSiteComp() {
+      this.createLinSiteComp.show = true;
     },
-    //打开编辑国家窗口
-    openUpdateCountryComp(row) {
-      this.createCountryComp.show = true;
-      this.$refs.createCountryComp.getCountryInfoById(row.id);
+    //打开编辑路线窗口
+    openUpdateLinSiteComp(row) {
+      this.createLinSiteComp.show = true;
+      this.$refs.createLinSiteComp.getLinSiteInfoById(row.id);
     },
     //批量删除
     onBatchDelete() {
       if (this.table.choosedRow.length === 0) {
-        warnMsg("请选择要删除的国家");
+        warnMsg("请选择要删除的路线");
         return;
       }
       this.$confirm("是否确定删除", "提示", {
@@ -252,7 +228,7 @@ export default {
         type: "warning",
       }).then(({ value }) => {
         let arr = this.table.choosedRow.map((item) => item.id);
-        deleteBatchCountry(arr).then((res) => {
+        deleteBatchLinSite(arr).then((res) => {
           this.$refs.table.clearSelection();
           this.batchDeleteSearch();
         });
@@ -265,8 +241,8 @@ export default {
     //   if (param.order === "descending") ss = param.prop + " desc"
     //   this.getTableList(ss)
     // },
-    oncreateCountryCompShowChange(val) {
-      this.createCountryComp.show = val;
+    oncreateLinSiteCompShowChange(val) {
+      this.createLinSiteComp.show = val;
     },
     //新增或编辑用户成功事件
     onSaveSuccess() {
@@ -274,6 +250,7 @@ export default {
     },
   },
   created() {
+    this.setComBox();
     this.getTableList();
   },
 };

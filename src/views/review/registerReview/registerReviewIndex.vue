@@ -150,13 +150,12 @@
           prop="creationTime"
           label="注册时间"
           show-overflow-tooltip
-          min-width="120"
+          min-width="165"
         >
           <template slot-scope="scope">
-            {{ scope.row.creationTime | parseTime("{y}-{m}-{d}") }}
+            {{ scope.row.creationTime | parseTime("{y}-{m}-{d} {h}:{i}:{s}") }}
           </template>
         </el-table-column>
-
         <el-table-column
           align="center"
           prop="IsLockoutEnabled"
@@ -313,6 +312,7 @@ import tree from "components/tree/tree";
 import { getRoleSelectList } from "api/user/roles";
 import { GetDeptUnitList, getOrganizatonByType } from "api/user/organization";
 import { checkBtnPeimission, RegisterReview } from "utils/btnRole";
+
 export default {
   name: "registerReviewIndex",
   mixins: [tableMixin],
@@ -405,7 +405,15 @@ export default {
       this.$refs.createUserComp.pageType = "update";
       this.$refs.createUserComp.getUserInfoById(row.id);
       this.$refs.createUserComp.GetRoleList();
-      this.$refs.createUserComp.getOrganizationTree();
+      this.$refs.createUserComp.getfileList(row.id, "");
+    },
+    //打开详情用户窗口
+    openInfoUserComp(row) {
+      this.createUserComp.show = true;
+      this.$refs.createUserComp.pageType = "info";
+      this.$refs.createUserComp.getUserInfoById(row.id);
+      this.$refs.createUserComp.GetRoleList();
+      this.$refs.createUserComp.getfileList(row.id, "");
     },
     onCreateUserCompShowChange(val) {
       this.createUserComp.show = val;

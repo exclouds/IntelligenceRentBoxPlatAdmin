@@ -1,11 +1,11 @@
 <template>
-  <div class="app-container country">
+  <div class="app-container siteTables">
     <el-form size="mini" @submit.native.prevent>
       <el-row style="margin-bottom: 10px">
         <el-col :span="4">
           <el-form-item label="代码：" style="padding-left: 15px">
             <el-input
-              placeholder="国家代码"
+              placeholder="代码"
               style="width: 70%"
               v-model="search.code"
               size="mini"
@@ -18,9 +18,9 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="国家名称：">
+          <el-form-item label="名称：">
             <el-input
-              placeholder="国家名称"
+              placeholder="名称"
               style="width: 70%"
               v-model="search.name"
               size="mini"
@@ -43,7 +43,7 @@
               "
               >搜索</el-button
             >
-            <el-button type="primary" size="mini" @click="openAddCountryComp"
+            <el-button type="primary" size="mini" @click="openAddSiteTablesComp"
               >新增</el-button
             >
             <el-button type="primary" size="mini" @click="onBatchDelete"
@@ -54,11 +54,11 @@
       </el-row>
     </el-form>
 
-    <el-row class="country-tableRow">
+    <el-row class="siteTables-tableRow">
       <el-table
         :cell-class-name="tableRowClassName"
         v-loading="table.loading"
-        :data="countryList"
+        :data="siteTablesList"
         :row-key="getRowKeys"
         @selection-change="onSelectChange"
         border
@@ -82,15 +82,23 @@
           align="center"
           prop="code"
           sortable="custom"
-          label="国家代码"
+          label="站点代码"
           min-width="6%"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="name"
+          prop="siteName"
           sortable="custom"
           show-overflow-tooltip
-          label="国家名称"
+          label="站点名称"
+          min-width="9%"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="countryCode"
+          sortable="custom"
+          show-overflow-tooltip
+          label="国家代码"
           min-width="9%"
         ></el-table-column>
         <el-table-column
@@ -115,7 +123,7 @@
         ></el-table-column>
         <el-table-column align="center" label="操作" min-width="7%">
           <template slot-scope="scope">
-            <div class="tableBtn" @click="openUpdateCountryComp(scope.row)">
+            <div class="tableBtn" @click="openUpdateSiteTablesComp(scope.row)">
               编辑
             </div>
             <el-popover placement="top" width="160" v-model="scope.row.popShow">
@@ -130,7 +138,7 @@
                 <el-button
                   type="danger"
                   size="mini"
-                  @click="deleteSingleCountry(scope.row.id)"
+                  @click="deleteSingleSiteTables(scope.row.id)"
                   >删除</el-button
                 >
               </div>
@@ -150,18 +158,18 @@
         layout="total, sizes, prev, pager, next, jumper"
       ></el-pagination>
     </el-row>
-    <create-country
-      ref="createCountryComp"
-      :pshow="createCountryComp.show"
-      @on-show-change="oncreateCountryCompShowChange"
+    <create-siteTable
+      ref="createSiteTablesComp"
+      :pshow="createSiteTablesComp.show"
+      @on-show-change="oncreateSiteTablesCompShowChange"
       @on-save-success="onSaveSuccess"
-    ></create-country>
+    ></create-siteTable>
   </div>
 </template>
 <style lang="scss">
-.country {
+.siteTables {
   height: 100%;
-  .country-tableRow {
+  .siteTables-tableRow {
     height: calc(100% - 130px);
     .el-table__body-wrapper {
       height: calc(100% - 51px) !important;
@@ -172,22 +180,22 @@
 <script>
 import { tableMixin } from "mixin/commTable";
 import {
-  getAllCountryList,
-  deleteBatchCountry,
-} from "api/publicBase/baseCountry";
+  getAllSiteTablesList,
+  deleteBatchSiteTables,
+} from "api/publicBase/siteTables";
 import { Server } from "net";
-import createCountry from "./createCountry";
+import createSiteTable from "./createSiteTable";
 //import {checkBtnPeimission,countryPage} from 'utils/btnRole'
 import { warnMsg } from "utils/messageBox";
 export default {
-  name: "countryIndex",
-  components: { createCountry },
+  name: "siteTablesIndex",
+  components: { "create-siteTable": createSiteTable },
   mixins: [tableMixin],
   data() {
     return {
       //countryPage,
-      countryList: [],
-      createCountryComp: {
+      siteTablesList: [],
+      createSiteTablesComp: {
         show: false,
       },
       search: {
@@ -214,11 +222,11 @@ export default {
         sorting: this.table.order.sort,
       };
 
-      getAllCountryList(data).then((res) => {
+      getAllSiteTablesList(data).then((res) => {
         this.table.loading = false;
         if (res.success) {
-          this.countryList = res.result.items;
-          this.countryList.forEach((item) => {
+          this.siteTablesList = res.result.items;
+          this.siteTablesList.forEach((item) => {
             this.$set(item, "popShow", false);
           });
           this.page.total = res.result.totalCount;
@@ -226,19 +234,19 @@ export default {
       });
     },
     //删除单个国家
-    deleteSingleCountry(id) {
-      deleteBatchCountry([id]).then((res) => {
+    deleteSingleSiteTables(id) {
+      deleteBatchSiteTables([id]).then((res) => {
         this.batchDeleteSearch();
       });
     },
     //打开新增国家窗口
-    openAddCountryComp() {
-      this.createCountryComp.show = true;
+    openAddSiteTablesComp() {
+      this.createSiteTablesComp.show = true;
     },
     //打开编辑国家窗口
-    openUpdateCountryComp(row) {
-      this.createCountryComp.show = true;
-      this.$refs.createCountryComp.getCountryInfoById(row.id);
+    openUpdateSiteTablesComp(row) {
+      this.createSiteTablesComp.show = true;
+      this.$refs.createSiteTablesComp.getSiteTablesInfoById(row.id);
     },
     //批量删除
     onBatchDelete() {
@@ -252,7 +260,7 @@ export default {
         type: "warning",
       }).then(({ value }) => {
         let arr = this.table.choosedRow.map((item) => item.id);
-        deleteBatchCountry(arr).then((res) => {
+        deleteBatchSiteTables(arr).then((res) => {
           this.$refs.table.clearSelection();
           this.batchDeleteSearch();
         });
@@ -265,8 +273,8 @@ export default {
     //   if (param.order === "descending") ss = param.prop + " desc"
     //   this.getTableList(ss)
     // },
-    oncreateCountryCompShowChange(val) {
-      this.createCountryComp.show = val;
+    oncreateSiteTablesCompShowChange(val) {
+      this.createSiteTablesComp.show = val;
     },
     //新增或编辑用户成功事件
     onSaveSuccess() {

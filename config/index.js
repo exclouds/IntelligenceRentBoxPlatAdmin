@@ -12,19 +12,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+      '/DBService': {
+        target: 'http://172.17.142.205:1920',
+        pathRewrite: {
+          '^/DBService': '/DBService'
+        },
+      },
       // '/DBService': {
-      //   target: 'http://222.173.95.170:9518',
+      //   target: 'http://localhost:5000',
       //   pathRewrite: {
-      //     '^/DBService': '/DBService'
+      //     '^/DBService': ''
       //   },
       // }
-
-      '/DBService': {
-        target: 'http://localhost:5000',
-        pathRewrite: {
-          '^/DBService': ''
-        },
-      }
     },
 
     // Various Dev Server settings

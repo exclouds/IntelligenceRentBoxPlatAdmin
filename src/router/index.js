@@ -154,45 +154,39 @@ export const asyncRouterMap = [
           //roles: ['root.bd.ggxx.gj']
         },
       },
-      //  {
-      //   path: 'AccountsubjectIndex',
-      //   component: () => import('@/views/publicBase/Accountingsubjects/AccountsubjectIndex').then(m => m.default),
-      //   name: 'AccountsubjectIndex',
-      //   meta: {
-      //     title: '会计科目',
-      //     icon: '个人中心',
-      //     keepAlive: true,
-      //     roles: ['Customs.AccountSubject']
-
-      //   },
-      //   btn: subaccount
-      // },
-      // {
-      //   path: 'ImportDataSituationIndex',
-      //   component: () => import('@/views/publicBase/ImportData/ImportDataSituationIndex').then(m => m.default),
-      //   name: 'ImportDataSituationIndex',
-      //   meta: {
-      //     title: '公司预算导入查询',
-      //     icon: '个人中心',
-      //     keepAlive: true,
-      //     roles: ['Customs.ImportDataSituation']
-
-      //   },      
-      // },
-      // {
-      //   path: 'LockAccountIndex',
-      //   component: () => import('@/views/publicBase/LockAccount/LockAccountIndex').then(m => m.default),
-      //   name: 'LockAccountIndex',
-      //   meta: {
-      //     title: '锁账设置',
-      //     icon: '个人中心',
-      //     keepAlive: true,
-      //     roles: ['Customs.LockAccount']
-
-      //   },
-      //   btn: LockAccount
-      // },
-
+      {
+        path: 'siteTables',
+        component: () => import('@/views/publicBase/siteTables/siteTablesIndex').then(m => m.default),
+        name: 'siteTables',
+        keepAlive: true,
+        meta: {
+          title: '站点维护',
+          icon: '个人中心',
+          //roles: ['root.bd.ggxx.gj']
+        },
+      },
+      {
+        path: 'line',
+        component: () => import('@/views/publicBase/line/lineIndex').then(m => m.default),
+        name: 'line',
+        keepAlive: true,
+        meta: {
+          title: '路线维护',
+          icon: '个人中心',
+          //roles: ['root.bd.ggxx.gj']
+        },
+      },
+      {
+        path: 'linSite',
+        component: () => import('@/views/publicBase/linSite/linSiteIndex').then(m => m.default),
+        name: 'linSite',
+        keepAlive: true,
+        meta: {
+          title: '站点路线维护',
+          icon: '个人中心',
+          //roles: ['root.bd.ggxx.gj']
+        },
+      },
     ]
   },
 
@@ -325,6 +319,18 @@ export const asyncRouterMap = [
         name: 'tenantReleaseQueryIndex',
         meta: {
           title: '租客信息查询',
+          icon: '个人客户',
+          keepAlive: true,
+          //roles: ['Customs.SpecialFee']
+        },
+        //btn: specialfee
+      },//boxTenantOrderQueryIndex
+      {
+        path: 'boxTenantOrderQueryIndex',
+        component: () => import('@/views/query/boxTenantOrderQueryIndex').then(m => m.default),
+        name: 'boxTenantOrderQueryIndex',
+        meta: {
+          title: '提单信息确认',
           icon: '个人客户',
           keepAlive: true,
           //roles: ['Customs.SpecialFee']

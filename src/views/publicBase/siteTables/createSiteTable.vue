@@ -1,7 +1,7 @@
 <template>
-  <div class="createCountry">
+  <div class="createSiteTables">
     <el-dialog
-      :title="form.id ? '编辑国家资料' : '新增国家资料'"
+      :title="form.id ? '编辑站点资料' : '新增站点资料'"
       v-dialogDrag
       :visible.sync="windowShow"
       width="500px"
@@ -19,12 +19,12 @@
         >
           <el-row>
             <el-col :span="20">
-              <el-form-item label="国家代码：" prop="code">
+              <el-form-item label="站点代码：" prop="code">
                 <el-input
                   size="mini"
                   @input="form.code = form.code.toUpperCase()"
                   v-model="form.code"
-                  placeholder="请输入国家代码"
+                  placeholder="请输入站点代码"
                   style="width: 100%"
                 ></el-input>
               </el-form-item>
@@ -32,13 +32,33 @@
           </el-row>
           <el-row>
             <el-col :span="20">
-              <el-form-item label="国家名称：" prop="name">
+              <el-form-item label="站点名称：" prop="name">
                 <el-input
                   size="mini"
                   maxlength="200"
-                  v-model="form.name"
-                  placeholder="请输入国家名称"
+                  v-model="form.siteName"
+                  placeholder="请输入站点名称"
                 ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="国家：" prop="name">
+                <el-select
+                  v-model="form.countryCode"
+                  collapse-tags
+                  placeholder="请选择国家"
+                  style="width: 100%"
+                  readonly
+                >
+                  <el-option
+                    v-for="item in countries"
+                    :key="item.value"
+                    :label="item.displayText"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -80,18 +100,19 @@
   </div>
 </template>
 <style lang="scss">
-.createCountry {
+.createSiteTables {
   .el-dialog__body {
-    height: 280px;
+    height: 300px;
   }
 }
 </style>
 <script>
 import {
-  getCountryInfoById,
-  createorUpdateCountry,
-} from "api/publicBase/baseCountry";
-import { getDicListByDitType } from "api/publicBase/dictionaryMng";
+  getSiteTablesInfoById,
+  createorUpdateSiteTables,
+} from "api/publicBase/siteTables";
+import { getAllCountryList } from "api/publicBase/baseCountry";
+import { getCountryList } from "api/publicBase/Combox";
 export default {
   components: {},
   props: {
@@ -112,7 +133,8 @@ export default {
         this.form = {
           id: "",
           code: "",
-          name: "",
+          siteName: "",
+          countryCode: "",
           isEnable: true,
           remarks: "",
         };
@@ -128,23 +150,33 @@ export default {
       form: {
         id: "",
         code: "",
-        name: "",
+        countryCode: "",
+        siteName: "",
         isEnable: true,
         remarks: "",
       },
+      countries: [],
       rules: {},
     };
   },
   methods: {
-    //获取单个国家信息
-    getCountryInfoById(id) {
+    setComBox() {
+      getCountryList({
+        IsEnable: true,
+      }).then((res) => {
+        this.countries = res.result;
+      });
+    },
+    //获取单个站点信息
+    getSiteTablesInfoById(id) {
       let _this = this;
       this.loading = true;
-      getCountryInfoById({ id: id })
+      getSiteTablesInfoById({ id: id })
         .then((res) => {
           _this.form.id = res.result.id;
           _this.form.code = res.result.code;
-          _this.form.name = res.result.name;
+          _this.form.countryCode = res.result.countryCode;
+          _this.form.siteName = res.result.siteName;
           _this.form.isEnable = res.result.isEnable;
           _this.form.remarks = res.result.remarks;
           this.loading = false;
@@ -161,11 +193,12 @@ export default {
         let data = {
           id: this.form.id,
           code: this.form.code,
-          name: this.form.name,
+          siteName: this.form.siteName,
+          countryCode: this.form.countryCode,
           isEnable: this.form.isEnable,
           remarks: this.form.remarks,
         };
-        createorUpdateCountry(data)
+        createorUpdateSiteTables(data)
           .then((res) => {
             this.btnLoading = false;
             this.windowShow = false;
@@ -176,6 +209,9 @@ export default {
           });
       }
     },
+  },
+  created() {
+    this.setComBox();
   },
 };
 </script>

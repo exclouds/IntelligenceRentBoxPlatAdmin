@@ -1,10 +1,10 @@
 import axios from 'axios';
-import {Message,MessageBox} from 'element-ui';
+import { Message, MessageBox } from 'element-ui';
 import store from '../store';
-import {getToken} from 'utils/auth';
-import {getCookie} from 'utils/cookie';
-import {warnMsg, errorMsg, successMsg} from 'utils/messageBox'
-import {data_priv} from './data'
+import { getToken } from 'utils/auth';
+import { getCookie } from 'utils/cookie';
+import { warnMsg, errorMsg, successMsg } from 'utils/messageBox'
+import { data_priv } from './data'
 
 axios.defaults.headers['Content-Type'] = 'application/json'
 
@@ -20,9 +20,10 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(config => {
   //config.headers['Abp.TenantId'] = 1
-  if(process.env.NODE_ENV === 'production'){
-    config.url = 'http://222.173.95.170:9518'+config.url
-  }
+  //if (process.env.NODE_ENV === 'production') {
+  //config.url = 'http://222.173.95.170:9518'+config.url
+  //config.url = 'http://172.17.142.205:1920' + config.url
+  //}
   if (getCookie('Abp.AuthToken')) {//store.getters.token
     config.headers['Authorization'] = 'Bearer ' + getCookie('Abp.AuthToken'); // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
   }
@@ -52,15 +53,15 @@ service.interceptors.response.use(
 
     }
     //状态码3001要特殊处理
-    if(res.success && response.config.msg) {
-      if(res.result && res.result.code == 3001){
+    if (res.success && response.config.msg) {
+      if (res.result && res.result.code == 3001) {
 
-      }else {
+      } else {
         successMsg(`${response.config.msg}成功`)
       }
-        
+
     }
-    
+
 
     if (response.status !== 200 && res.status !== 200) {
       Message({
@@ -73,21 +74,20 @@ service.interceptors.response.use(
     }
   },
   err => {
-    
-    if(err.response.data.success === false && err.response.data.error.code == 3000) {
+
+    if (err.response.data.success === false && err.response.data.error.code == 3000) {
       errorMsg(err.response.data.error.message)
     }
     //登录权限
-    if(err.response.data.success === false && err.response.data.error.code === 0) {
+    if (err.response.data.success === false && err.response.data.error.code === 0) {
       errorMsg(err.response.data.error.message)
     }
 
-    if(err.code == 'ECONNABORTED' && err.message.indexOf('timeout')!=-1)
-    {
+    if (err.code == 'ECONNABORTED' && err.message.indexOf('timeout') != -1) {
       Message({
         message: '请求数据超时，请刷新页面后重试',
-        duration:3000,
-        showClose:true,
+        duration: 3000,
+        showClose: true,
         type: 'error'
       });
     }

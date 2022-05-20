@@ -22,8 +22,8 @@
                 size="mini"
                 maxlength="10"
                 v-model="form.realName"
-                placeholder="请输入真实姓名"
-                readonly
+                placeholder=""
+                disabled
               ></el-input>
             </el-form-item>
           </el-col>
@@ -33,8 +33,8 @@
                 size="mini"
                 v-model="form.userName"
                 maxlength="20"
-                placeholder="请输入登陆账户"
-                readonly
+                placeholder=""
+                disabled
               ></el-input>
             </el-form-item>
           </el-col>
@@ -42,10 +42,10 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="性别：" prop="sex">
-              <el-radio v-model="form.sex" label="0" readonly
+              <el-radio v-model="form.sex" label="0" disabled
                 ><icon name="男" scale="1.5"
               /></el-radio>
-              <el-radio v-model="form.sex" label="1" readonly
+              <el-radio v-model="form.sex" label="1" disabled
                 ><icon name="女" scale="1.5"
               /></el-radio>
             </el-form-item>
@@ -53,62 +53,32 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="所属公司：" prop="choosedTreeNode">
-              <!-- <tree-select ref="chooseEquNode" @on-treeShow-change="ontreeShowChange" :choosedEquipmentNode="form.choosedTreeNode" style="width:100%"></tree-select>
-                    <div class="editOrgComp-row-tree" v-show="treeComp.show" >
-                      <tree ref='treeComp' :pCheckStrictly="true"  :pTreeDefaultProps="treeComp.treeConfig" :pTreeData="treeComp.data" :pChoosedNode="treeComp.choosedTreeNodeId"
-                      @on-nodeChange="onNodeClick" @on-outside-click="onClickOutSide"></tree> 
-                    </div>  -->
+            <el-form-item label="所属公司：" prop="groupJobNum">
               <el-select
-                v-model="form.choosedTreeNode"
+                v-model="form.groupJobNum"
                 collapse-tags
-                clearable
-                filterable
-                placeholder="请选择所属公司"
-                @change="onNodeClick"
+                placeholder=""
                 style="width: 100%"
-                readonly
+                disabled
               >
                 <el-option
-                  v-for="item in treeComp.data"
-                  :key="item.nodeId"
-                  :label="item.nodeName"
-                  :value="item.nodeUUid"
+                  v-for="item in companyList"
+                  :key="item.value"
+                  :label="item.displayText"
+                  :value="item.value"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
-            <el-form-item label="所属部门：" prop="deptCode">
-              <el-select
-                v-model="form.deptCode"
-                placeholder="请选择部门"
-                style="width: 100%"
-                clearable
-                filterable
-                readonly
-              >
-                <el-option
-                  v-for="item in deptreeComp.data"
-                  :key="item.nodeId"
-                  :label="item.nodeName"
-                  :value="item.nodeUUid"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
             <el-form-item label="所属角色：" prop="roleIds">
               <!-- <el-input v-model="form.userName" placeholder="请选择所属角色"></el-input> -->
               <el-select
                 v-model="form.roleIds"
-                multiple
                 collapse-tags
-                placeholder="请选择角色"
+                placeholder=""
                 style="width: 100%"
-                readonly
+                disabled
               >
                 <el-option
                   v-for="item in roleList"
@@ -119,41 +89,66 @@
               </el-select>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item label="邮箱：" prop="email">
               <el-input
                 size="mini"
                 v-model="form.email"
-                placeholder="请输入邮箱"
+                placeholder=""
                 clearable
-                readonly
+                disabled
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="电话：" prop="phone">
+              <el-input
+                size="mini"
+                v-model="form.phone"
+                placeholder=""
+                clearable
+                disabled
               ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="电话：" prop="phone">
-              <el-input
-                size="mini"
-                v-model="form.phone"
-                placeholder="请输入电话号码"
-                clearable
-                readonly
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="手机：" prop="mobilePhone">
               <el-input
                 size="mini"
                 v-model="form.mobilePhone"
-                placeholder="请输入手机号码"
+                placeholder=""
                 clearable
-                readonly
+                disabled
               ></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="图片附件：" prop="">
+              <div :span="12" v-for="(item, index) in fileList" :key="index">
+                <div class="tableBtn" @click="showimg(item.url)">
+                  {{ item.name }}
+                </div>
+              </div>
+            </el-form-item>
+          </el-col>
+          <!-- <el-col
+            :span="12"
+            v-for="(item, index) in fileList"
+            :key="index"
+            style="padding: 20px"
+          >
+            <el-form-item label="图片附件：" prop="">
+              <el-image :src="item.url" :preview-src-list="[item.url]">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </el-form-item>
+          </el-col> -->
         </el-row>
         <el-row>
           <el-col :span="24">
@@ -164,16 +159,25 @@
                 :autosize="{ minRows: 5, maxRows: 5 }"
                 v-model="form.VerifyRem"
                 placeholder=""
+                :disabled="pageType == 'info'"
               ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="save(true)" size="small"
+        <el-button
+          type="primary"
+          @click="save(true)"
+          size="small"
+          v-if="pageType == 'update'"
           >通过</el-button
         >
-        <el-button type="danger" @click="save(false)" size="small"
+        <el-button
+          type="danger"
+          @click="save(false)"
+          size="small"
+          v-if="pageType == 'update'"
           >不通过</el-button
         >
         <el-button @click="windowShow = false" size="small">取 消</el-button>
@@ -214,6 +218,12 @@
     height: 450px;
     clear: both;
   }
+  .el-input__inner {
+    background-color: white;
+    border-color: #e4e7ed;
+    color: #606266;
+    cursor: not-allowed;
+  }
 }
 </style>
 <script>
@@ -224,7 +234,8 @@ import { createUser, updateUser, getUserInfoById } from "api/user/user";
 import { GetDeptUnitList, getOrganizatonByType } from "api/user/organization";
 import { mobile, telephone, email } from "utils/validate";
 import { warnMsg, successMsg } from "utils/messageBox";
-import { getDicListByDitType } from "api/publicBase/dictionaryMng";
+import { getCustCompanyList } from "api/publicBase/Combox";
+import { GetUPFile } from "api/publicBase/Attachment";
 export default {
   components: {
     treeSelect,
@@ -338,14 +349,19 @@ export default {
       deptreeComp: {
         data: [],
       },
-      typeList: [],
-      InsidetypeList: [],
-      regionList: [], //大区下拉
+      companyList: [],
+      fileList: [],
     };
   },
   methods: {
     //添加查询combox
-    setComBox() {},
+    setComBox() {
+      getCustCompanyList({
+        isAdmin: true,
+      }).then((res) => {
+        this.companyList = res.result;
+      });
+    },
     //单击树选择框控件
     ontreeShowChange(val) {
       this.treeComp.show = val;
@@ -443,7 +459,7 @@ export default {
         this.form.id = res.result.user.id;
         this.form.realName = res.result.user.name;
         this.form.companyJobNum = res.result.user.surname;
-        this.form.groupJobNum = res.result.user.companyWorkNo;
+        this.form.groupJobNum = res.result.user.organizationCode;
         this.form.userName = res.result.user.userName;
         this.form.email = res.result.user.emailAddress;
         this.form.phone = res.result.user.telNumber;
@@ -452,25 +468,6 @@ export default {
         this.form.roleIds = res.result.roles;
         this.form.code = res.result.user.organizationCode;
         this.form.deptCode = res.result.user.deptCode;
-
-        // var choosedTreeNode=[];
-        // var choosedTreeNodeId=[];
-        // res.result.dpts.forEach(dpt => {
-        //     choosedTreeNode.push({nodeName:dpt.displayName});
-        //      choosedTreeNodeId.push({nodeName:dpt.id});
-        // });
-        this.form.choosedTreeNode = res.result.user.organizationCode.split(",");
-        this.getdeplist(res.result.user.deptCode);
-        // this.form.choosedTreeNode = choosedTreeNode;
-
-        // this.$nextTick(()=>{
-        //      this.treeComp.choosedTreeNodeId = choosedTreeNodeId;
-        // })
-        // this.form.choosedTreeNode = res.result.dpts.length>0? [{nodeName:res.result.dpts[].displayName}] : []
-
-        // this.$nextTick(()=>{
-        //      this.treeComp.choosedTreeNodeId = [res.result.dpts.id]
-        // })
       });
     },
     //提交
@@ -539,6 +536,20 @@ export default {
           }
         }
       });
+    },
+    getfileList(id, billno) {
+      GetUPFile({ id: id, billno: billno }).then((res) => {
+        if (res.success) {
+          this.fileList = res.result;
+        }
+      });
+    },
+    showimg(eleurl) {
+      if (eleurl === "" || eleurl === null) {
+        warnMsg("未找相关附件地址");
+        return;
+      }
+      window.open(eleurl, "_blank");
     },
   },
   created() {

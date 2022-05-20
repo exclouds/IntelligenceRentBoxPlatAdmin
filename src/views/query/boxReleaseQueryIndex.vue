@@ -1,6 +1,6 @@
 <template>
   <div class="app-container userMng">
-    <el-form size="mini" label-width="100px">
+    <el-form size="mini" label-width="80px">
       <el-row style="margin-bottom: 10px">
         <el-col :span="4">
           <el-form-item label="起运站：" prop="startStation">
@@ -12,7 +12,7 @@
               readonly
             >
               <el-option
-                v-for="item in ZDs"
+                v-for="item in qyz"
                 :key="item.value"
                 :label="item.displayText"
                 :value="item.value"
@@ -30,7 +30,7 @@
               readonly
             >
               <el-option
-                v-for="item in ZDs"
+                v-for="item in mdz"
                 :key="item.value"
                 :label="item.displayText"
                 :value="item.value"
@@ -38,38 +38,68 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
-          <el-form-item label="有效时间起：" prop="effectiveSTime">
+        <el-col :span="8">
+          <el-form-item
+            label="有效时间："
+            prop="effectiveSTime"
+            label-width="100px"
+          >
             <el-date-picker
               v-model="search.effectiveSTime"
               type="datetime"
               value-format="yyyy-MM-dd HH:mm:dd"
               format="yyyy-MM-dd HH:mm"
               placeholder="选择日期"
-              style="width: 100%"
+            />
+            -
+            <el-date-picker
+              v-model="search.effectiveETime"
+              type="datetime"
+              value-format="yyyy-MM-dd HH:mm:dd"
+              format="yyyy-MM-dd HH:mm"
+              placeholder="选择日期"
             />
           </el-form-item>
         </el-col>
-        <el-col :span="4">
-          <el-form-item label="尺寸：" prop="">
+        <el-col :span="3">
+          <el-form-item label="尺寸：" prop="size" label-width="70px">
             <el-input
               placeholder="尺寸"
-              style="width: 100%"
-              v-model="search.CC"
+              v-model="search.size"
               size="mini"
               clearable
             ></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
-          <el-form-item label="箱型：" prop="">
+        <el-col :span="3">
+          <el-form-item label="箱型：" prop="box" label-width="70px">
             <el-input
               placeholder="箱型"
-              style="width: 100%"
-              v-model="search.XX"
+              v-model="search.box"
               size="mini"
               clearable
             ></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3">
+          <el-form-item
+            label="完成状态："
+            prop="IsVerify"
+            style="position: relative"
+          >
+            <el-select
+              v-model="search.finish"
+              collapse-tags
+              placeholder="完成状态"
+              style="width: 100%"
+            >
+              <el-option
+                v-for="item in finishes"
+                :key="item.val"
+                :label="item.name"
+                :value="item.val"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -87,7 +117,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-row style="height: calc(70% - 110px)">
+    <el-row style="height: calc(70% - 195px)">
       <el-table
         :cell-class-name="tableRowClassName"
         :data="tableList"
@@ -102,7 +132,7 @@
         :cell-style="{ padding: '5px' }"
         style="width: 100%; height: 100%"
         ref="table"
-        @row-dbclick="onRowDbclick"
+        @row-click="onRowDbclick"
       >
         <!-- <el-table-column type="index" align="center" label="序号">
             <template slot-scope="scope">
@@ -116,35 +146,35 @@
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="BillNO"
+          prop="billNO"
           label="单号"
           show-overflow-tooltip
-          width="100"
+          width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="StartStation"
+          prop="startStation"
           label="起运站"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="EndStation"
+          prop="endStation"
           label="目的站"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="ReturnStation"
+          prop="returnStation"
           label="还箱地"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="IsInStock"
+          prop="isInStock"
           label="是否库存"
           show-overflow-tooltip
           width="120"
@@ -155,48 +185,78 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="PredictTime"
+          prop="predictTime"
           label="预计到站时间"
           show-overflow-tooltip
-          width="200"
-        ></el-table-column>
+          width="145"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.predictTime | parseTime("{y}-{m}-{d} {h}:{i}:{s}") }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          prop="EffectiveSTime"
+          prop="effectiveSTime"
           label="有效时间起"
           show-overflow-tooltip
-          width="120"
-        ></el-table-column>
+          width="145"
+        >
+          <template slot-scope="scope">
+            {{
+              scope.row.effectiveSTime | parseTime("{y}-{m}-{d} {h}:{i}:{s}")
+            }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          prop="EffectiveETime"
+          prop="effectiveETime"
           label="有效时间止"
           show-overflow-tooltip
-          width="120"
+          width="145"
+        >
+          <template slot-scope="scope">
+            {{
+              scope.row.effectiveETime | parseTime("{y}-{m}-{d} {h}:{i}:{s}")
+            }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          align="center"
+          prop="lineName"
+          label="所属路线"
+          show-overflow-tooltip
+          width="80"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="SellingPrice"
+          prop="sellingPrice"
           label="租金"
           show-overflow-tooltip
           width="190"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="Line"
-          label="所属路线"
+          prop="inquiryNum"
+          label="询价次数"
           show-overflow-tooltip
           width="80"
         ></el-table-column>
-        <el-table-column align="center" label="操作" width="140px">
+        <el-table-column
+          align="center"
+          prop="remarks"
+          label="备注"
+          show-overflow-tooltip
+          min-width="80"
+        ></el-table-column>
+        <!-- <el-table-column align="center" label="操作" width="140px">
           <template slot-scope="scope">
-            <!-- <div
+            <div
               class="tableBtn"
               @click="openUpdateUserComp(scope.row)"
               v-if="!search.IsVerify"
             >
               审核
-            </div> -->
+            </div>
             <div
               class="tableBtn"
               @click="openUpdateUserComp(scope.row)"
@@ -205,7 +265,7 @@
               详情
             </div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
       <el-pagination
         style="margin-top: 10px"
@@ -220,14 +280,8 @@
       </el-pagination>
     </el-row>
     <el-row style="height: calc(30%)">
-      <Box-Details ref="boxDetailsComp" style="margin-top: 30px"></Box-Details>
+      <Box-Details ref="boxDetailsComp" style="margin-top: 50px"></Box-Details>
     </el-row>
-    <Box-Tenant
-      ref="createBoxComp"
-      :pshow="createBoxComp.show"
-      @on-show-change="oncreateBoxCompShowChange"
-      @on-save-success="onSaveSuccess"
-    ></Box-Tenant>
   </div>
 </template>
 <style lang="scss">
@@ -262,63 +316,70 @@
 </style>
 <script>
 import { tableMixin } from "mixin/commTable";
-import boxTenantOrderInfoIndex from "./boxTenantOrderInfoIndex";
 import boxDetailsIndex from "./boxDetailsIndex";
 import { getBoxReleaseInfoList } from "api/releaseReview/boxReleaseReview";
 import { warnMsg, successMsg } from "utils/messageBox";
-import treeSelect from "components/treeSelect/treeSelect";
-import tree from "components/tree/tree";
 import { checkBtnPeimission, RegisterReview } from "utils/btnRole";
+import { getSiteList } from "api/publicBase/Combox";
 export default {
   name: "boxReleaseQueryIndex",
   mixins: [tableMixin],
   components: {
-    "Box-Tenant": boxTenantOrderInfoIndex,
     "Box-Details": boxDetailsIndex,
-    treeSelect,
-    tree,
   },
   data() {
     return {
       RegisterReview,
-      SetKesDept: {
-        value: "nodeUUid",
-        label: "nodeName",
-        children: "children",
-      }, //自定义  级联选择器value label
       tableList: [],
       search: {
         name: "",
         startStation: "",
         endStation: "",
-        effectiveSTime: "",
+        effectiveSTime: undefined,
+        effectiveETime: undefined,
+        size: "",
+        box: "",
+        finish: false,
       },
-      isVerifys: [
-        { name: "未审核", val: false },
-        { name: "已审核", val: true },
+      finishes: [
+        { name: "未完成", val: false },
+        { name: "已完成", val: true },
       ],
-      treeComp: {
-        show: false,
-        data: [],
-      },
-      choosedTreeNode: [],
       createBoxComp: {
         show: false,
       },
+      qyz: [],
+      mdz: [],
     };
   },
   methods: {
     checkBtnPeimission,
+    setComBox() {
+      getSiteList({
+        CountryCode: "",
+        IsEnable: true,
+      }).then((res) => {
+        this.qyz = res.result;
+        this.mdz = res.result;
+      });
+    },
     getRowKeys(row) {
       return row.id.toString();
     },
-    //获取用户列表
+    //获取列表
     getTableList() {
       let data = {
         maxResultCount: this.page.pageSize,
         skipCount: (this.page.currentPage - 1) * this.page.pageSize,
         filter: this.search.name,
-        IsVerify: this.search.IsVerify,
+        IsVerify: true,
+        startStation: this.search.startStation,
+        endStation: this.search.endStation,
+        effectiveSTime: this.search.effectiveSTime,
+        effectiveETime: this.search.effectiveETime,
+        size: this.search.size,
+        box: this.search.box,
+        finish: this.search.finish,
       };
 
       this.tableData = [];
@@ -334,6 +395,8 @@ export default {
               this.$set(item, "pop1Show", false);
             });
             this.page.total = res.result.totalCount;
+
+            this.$refs.boxDetailsComp.tableList = [];
           }
         })
         .catch((err) => {
@@ -354,32 +417,15 @@ export default {
     onSaveSuccess() {
       this.getTableList();
     },
-    //树数据回调事件
-    onNodeClick(
-      clickNode //choosedNodeID
-    ) {
-      // this.form.parentId = clickNode.nodeId
-      this.choosedTreeNode = clickNode;
-      this.search.code = clickNode.nodeUUid;
-      this.getdeplist();
-    },
-    //
-    onClickOutSide() {
-      if (this.treeComp.show == true) {
-        this.treeComp.show = false;
-        this.$refs.chooseEquNode.iconChange();
-      }
-    },
-    //单击树选择框控件
-    ontreeShowChange(val) {
-      this.treeComp.show = val;
-    },
     onRowDbclick(row, column, event) {
-      this.$refs.boxDetailsComp.search.BoxTenantId = row.Id;
+      this.$refs.boxDetailsComp.search.BoxTenantNO = row.billNO;
+      this.$refs.boxDetailsComp.search.size = this.search.size;
+      this.$refs.boxDetailsComp.search.box = this.search.box;
       this.$refs.boxDetailsComp.getTableList();
     },
   },
   created() {
+    this.setComBox();
     this.getTableList();
     this.search.IsVerify = false;
   },

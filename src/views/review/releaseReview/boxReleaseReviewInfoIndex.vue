@@ -4,7 +4,7 @@
       :title="'箱东发布信息审批'"
       v-dialogDrag
       :visible.sync="windowShow"
-      width="800px"
+      width="1200px"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
@@ -17,182 +17,264 @@
       >
         <el-row>
           <el-col :span="12">
-            <el-form-item label="单号：" prop="billNo">
-              <el-input
-                size="mini"
-                maxlength="10"
-                v-model="form.billNo"
-                placeholder="请输入单号"
-                readonly
-              ></el-input>
-            </el-form-item>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="单号：" prop="billNo">
+                  <el-input
+                    size="mini"
+                    maxlength="10"
+                    v-model="form.billNo"
+                    placeholder="请输入单号"
+                    disabled
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="起运站：" prop="startStation">
+                  <el-select
+                    v-model="form.startStation"
+                    collapse-tags
+                    placeholder=""
+                    style="width: 100%"
+                    disabled
+                  >
+                    <el-option
+                      v-for="item in ZDs"
+                      :key="item.value"
+                      :label="item.displayText"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="目的站：" prop="endStation">
+                  <el-select
+                    v-model="form.endStation"
+                    collapse-tags
+                    placeholder=""
+                    style="width: 100%"
+                    disabled
+                  >
+                    <el-option
+                      v-for="item in ZDs"
+                      :key="item.value"
+                      :label="item.displayText"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="还箱地：" prop="returnStation">
+                  <el-select
+                    v-model="form.returnStation"
+                    collapse-tags
+                    placeholder=""
+                    style="width: 100%"
+                    disabled
+                  >
+                    <el-option
+                      v-for="item in ZDs"
+                      :key="item.value"
+                      :label="item.displayText"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="是否库存：" prop="isInStock">
+                  <el-switch v-model="form.isInStock" disabled></el-switch>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="预计到站时间：" prop="predictTime">
+                  <el-date-picker
+                    v-model="form.predictTime"
+                    type="datetime"
+                    value-format="yyyy-MM-dd HH:mm:dd"
+                    format="yyyy-MM-dd HH:mm"
+                    placeholder=""
+                    style="width: 100%"
+                    disabled
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="租金：" prop="sellingPrice">
+                  <el-input
+                    size="mini"
+                    maxlength="10"
+                    v-model="form.sellingPrice"
+                    placeholder=""
+                    disabled
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="有效时间起：" prop="effectiveSTime">
+                  <el-date-picker
+                    v-model="form.effectiveSTime"
+                    type="datetime"
+                    value-format="yyyy-MM-dd HH:mm:dd"
+                    format="yyyy-MM-dd HH:mm"
+                    placeholder=""
+                    style="width: 100%"
+                    disabled
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="有效时间止：" prop="effectiveETime">
+                  <el-date-picker
+                    v-model="form.effectiveETime"
+                    type="datetime"
+                    value-format="yyyy-MM-dd HH:mm:dd"
+                    format="yyyy-MM-dd HH:mm"
+                    placeholder=""
+                    style="width: 100%"
+                    disabled
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="所属路线：" prop="line">
+                  <el-select
+                    v-model="form.line"
+                    collapse-tags
+                    placeholder=""
+                    style="width: 100%"
+                    disabled
+                  >
+                    <el-option
+                      v-for="item in Lines"
+                      :key="item.value"
+                      :label="item.displayText"
+                      :value="item.value"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="备注：" prop="remarks">
+                  <el-input
+                    type="textarea"
+                    :maxlength="500"
+                    :autosize="{ minRows: 5, maxRows: 5 }"
+                    v-model="form.remarks"
+                    placeholder=""
+                    disabled
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="审批意见：" prop="verifyRem">
+                  <el-input
+                    type="textarea"
+                    :maxlength="500"
+                    :autosize="{ minRows: 5, maxRows: 5 }"
+                    v-model="form.verifyRem"
+                    placeholder=""
+                    :disabled="pageType == 'info'"
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :span="12">
-            <el-form-item label="起运站：" prop="startStation">
-              <el-select
-                v-model="form.startStation"
-                collapse-tags
-                placeholder="请选择起运站"
-                style="width: 100%"
-                readonly
-              >
-                <el-option
-                  v-for="item in ZDs"
-                  :key="item.value"
-                  :label="item.displayText"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="目的站：" prop="endStation">
-              <el-select
-                v-model="form.endStation"
-                collapse-tags
-                placeholder="请选择目的站"
-                style="width: 100%"
-                readonly
-              >
-                <el-option
-                  v-for="item in ZDs"
-                  :key="item.value"
-                  :label="item.displayText"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="还箱地：" prop="returnStation">
-              <el-select
-                v-model="form.returnStation"
-                collapse-tags
-                placeholder="请选择还箱站"
-                style="width: 100%"
-                readonly
-              >
-                <el-option
-                  v-for="item in ZDs"
-                  :key="item.value"
-                  :label="item.displayText"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="是否库存：" prop="isInStock">
-              <el-switch v-model="form.isInStock"></el-switch>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="预计到站时间：" prop="predictTime">
-              <el-date-picker
-                v-model="form.predictTime"
-                type="datetime"
-                value-format="yyyy-MM-dd HH:mm:dd"
-                format="yyyy-MM-dd HH:mm"
-                placeholder="选择日期"
-                style="width: 100%"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="有效时间起：" prop="effectiveSTime">
-              <el-date-picker
-                v-model="form.effectiveSTime"
-                type="datetime"
-                value-format="yyyy-MM-dd HH:mm:dd"
-                format="yyyy-MM-dd HH:mm"
-                placeholder="选择日期"
-                style="width: 100%"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="12">
-            <el-form-item label="有效时间止：" prop="effectiveETime">
-              <el-date-picker
-                v-model="form.effectiveETime"
-                type="datetime"
-                value-format="yyyy-MM-dd HH:mm:dd"
-                format="yyyy-MM-dd HH:mm"
-                placeholder="选择日期"
-                style="width: 100%"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="租金：" prop="sellingPrice">
-              <el-input
-                size="mini"
-                maxlength="10"
-                v-model="form.sellingPrice"
-                placeholder="请输入租金"
-                readonly
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="所属路线：" prop="">
-              <el-select
-                v-model="form.line"
-                collapse-tags
-                placeholder="请选择路线"
-                style="width: 100%"
-                readonly
-              >
-                <el-option
-                  v-for="item in lines"
-                  :key="item.value"
-                  :label="item.displayText"
-                  :value="item.value"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="备注：" prop="remarks">
-              <el-input
-                type="textarea"
-                :maxlength="500"
-                :autosize="{ minRows: 5, maxRows: 5 }"
-                v-model="form.remarks"
-                placeholder=""
-                readonly
-              ></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="审批意见：" prop="verifyRem">
-              <el-input
-                type="textarea"
-                :maxlength="500"
-                :autosize="{ minRows: 5, maxRows: 5 }"
-                v-model="form.verifyRem"
-                placeholder=""
-              ></el-input>
-            </el-form-item>
+            <el-row style="padding: 10px">
+              <div style="padding-bottom: 10px; padding-left: 15px">
+                附件信息
+              </div>
+            </el-row>
+            <el-row>
+              <el-col :span="22" :offset="1">
+                <el-table
+                  :cell-class-name="tableRowClassName"
+                  v-loading="table.loading"
+                  :data="filelist"
+                  :row-key="getRowKeys"
+                  border
+                  stripe
+                  highlight-current-rowc
+                  fit
+                  height="300px"
+                  style="width: 100%"
+                  ref="table"
+                >
+                  <el-table-column
+                    type="index"
+                    align="center"
+                    label="序号"
+                    width="50"
+                  >
+                    <template slot-scope="scope">{{
+                      countIndex(scope.$index)
+                    }}</template>
+                  </el-table-column>
+                  <el-table-column
+                    align="center"
+                    prop="name"
+                    show-overflow-tooltip
+                    label="文件名称"
+                  >
+                    <template slot-scope="scope">
+                      <div
+                        class="tableBtn"
+                        @click="showimg(scope.row.url)"
+                        v-if="scope.row.url != '' && scope.row.url != null"
+                      >
+                        {{ scope.row.name }}
+                      </div>
+                      <span v-else>{{ scope.row.url }}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
+                    align="center"
+                    prop="creationTime"
+                    label="上传时间"
+                    width="150"
+                    show-overflow-tooltip
+                  >
+                    <template slot-scope="scope">{{
+                      scope.row.creationTime | parseTime()
+                    }}</template>
+                  </el-table-column>
+                </el-table>
+              </el-col>
+            </el-row>
           </el-col>
         </el-row>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="save(true)" size="small"
+        <el-button
+          type="primary"
+          @click="save(true)"
+          size="small"
+          v-if="pageType == 'update'"
           >通过</el-button
         >
-        <el-button type="danger" @click="save(false)" size="small"
+        <el-button
+          type="danger"
+          @click="save(false)"
+          size="small"
+          v-if="pageType == 'update'"
           >不通过</el-button
         >
         <el-button @click="windowShow = false" size="small">取 消</el-button>
@@ -233,6 +315,12 @@
     height: 450px;
     clear: both;
   }
+  .el-input.is-disabled .el-input__inner {
+    background-color: #f5f7fa;
+    border-color: #e4e7ed;
+    color: #606266;
+    cursor: not-allowed;
+  }
 }
 </style>
 <script>
@@ -244,6 +332,9 @@ import {
 } from "api/releaseReview/boxReleaseReview";
 import { warnMsg, successMsg } from "utils/messageBox";
 import { getDicListByDitType } from "api/publicBase/dictionaryMng";
+import { getSiteList, getLineList } from "api/publicBase/Combox";
+import { GetUPFile } from "api/publicBase/Attachment";
+import { tableMixin } from "mixin/commTable";
 export default {
   components: {
     treeSelect,
@@ -255,6 +346,7 @@ export default {
       default: false,
     },
   },
+  mixins: [tableMixin],
   watch: {
     pshow(newValue, oldValue) {
       this.windowShow = newValue;
@@ -275,10 +367,11 @@ export default {
           effectiveSTime: undefined,
           effectiveETime: undefined,
           sellingPrice: 0,
-          line: undefined,
+          line: "1",
           remarks: "",
           verifyRem: "",
         };
+        this.filelist = [];
         this.treeComp.choosedTreeNodeId = [];
         this.$emit("on-show-change", newValue);
       }
@@ -299,7 +392,7 @@ export default {
         effectiveSTime: undefined,
         effectiveETime: undefined,
         sellingPrice: 0,
-        line: undefined,
+        line: "1",
         remarks: "",
         verifyRem: "",
       },
@@ -314,25 +407,41 @@ export default {
       deptreeComp: {
         data: [],
       },
+      filelist: [],
     };
   },
   methods: {
+    getRowKeys(row) {
+      return row.id.toString();
+    },
     //添加查询combox
     setComBox() {
-      getDicListByDitType({
-        BaseKeyValueTypeCode: "ZD",
-        Code: "",
-        Name: "",
+      getSiteList({
+        CountryCode: "",
+        IsEnable: true,
       }).then((res) => {
-        this.ZDs = res.result.comboxs;
+        this.ZDs = res.result;
       });
-      getDicListByDitType({
-        BaseKeyValueTypeCode: "LX",
+      getLineList({
         Code: "",
-        Name: "",
+        IsEnable: true,
       }).then((res) => {
-        this.HXs = res.result.comboxs;
+        this.Lines = res.result;
       });
+      // getDicListByDitType({
+      //   BaseKeyValueTypeCode: "ZD",
+      //   Code: "",
+      //   Name: "",
+      // }).then((res) => {
+      //   this.ZDs = res.result.comboxs;
+      // });
+      // getDicListByDitType({
+      //   BaseKeyValueTypeCode: "LX",
+      //   Code: "",
+      //   Name: "",
+      // }).then((res) => {
+      //   this.Lines = res.result.comboxs;
+      // });
     },
     //单击树选择框控件
     ontreeShowChange(val) {
@@ -356,18 +465,18 @@ export default {
     getBoxReleaseInfoById(boxId) {
       getBoxReleaseInfoById({ id: boxId }).then((res) => {
         this.form.id = res.result.id;
-        this.form.billNo = res.result.BillNO;
-        this.form.startStation = res.result.StartStation;
-        this.form.endStation = res.result.EndStation;
-        this.form.returnStation = res.result.ReturnStation;
-        this.form.isInStock = res.result.IsInStock;
-        this.form.predictTime = res.result.PredictTime;
-        this.form.effectiveSTime = res.result.EffectiveSTime;
-        this.form.effectiveETime = res.result.EffectiveETime;
-        this.form.sellingPrice = res.result.SellingPrice;
-        this.form.line = res.result.user.Line;
-        this.form.remarks = res.result.Remarks;
-        this.form.verifyRem = res.result.VerifyRem;
+        this.form.billNo = res.result.billNO;
+        this.form.startStation = res.result.startStation;
+        this.form.endStation = res.result.endStation;
+        this.form.returnStation = res.result.returnStation;
+        this.form.isInStock = res.result.isInStock;
+        this.form.predictTime = res.result.predictTime;
+        this.form.effectiveSTime = res.result.effectiveSTime;
+        this.form.effectiveETime = res.result.effectiveETime;
+        this.form.sellingPrice = res.result.sellingPrice;
+        this.form.line = res.result.line.toString();
+        this.form.remarks = res.result.remarks;
+        this.form.verifyRem = res.result.verifyRem;
       });
     },
     //提交
@@ -384,10 +493,10 @@ export default {
               }
             }
             let data = {
-              Id: this.form.id,
-              IsVerify: true,
-              VerifyRem: this.form.verifyRem,
-              IsEnable: flag,
+              id: this.form.id,
+              isVerify: true,
+              verifyRem: this.form.verifyRem,
+              isEnable: flag,
             };
             updateBoxReleaseInfo(data).then((res) => {
               successMsg("审批成功");
@@ -397,6 +506,26 @@ export default {
           }
         }
       });
+    },
+    getfileList(id, billNo) {
+      this.table.loading = true;
+      GetUPFile({ id: id, billno: billNo })
+        .then((res) => {
+          if (res.success) {
+            this.filelist = res.result;
+            this.table.loading = false;
+          }
+        })
+        .catch(() => {
+          this.table.loading = true;
+        });
+    },
+    showimg(eleurl) {
+      if (eleurl === "" || eleurl === null) {
+        warnMsg("未找相关附件地址");
+        return;
+      }
+      window.open(eleurl, "_blank");
     },
   },
   created() {

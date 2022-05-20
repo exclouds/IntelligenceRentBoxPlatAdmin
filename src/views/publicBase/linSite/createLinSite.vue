@@ -1,7 +1,7 @@
 <template>
-  <div class="createCountry">
+  <div class="createLinSite">
     <el-dialog
-      :title="form.id ? '编辑国家资料' : '新增国家资料'"
+      :title="form.id ? '编辑站点路线' : '新增站点路线'"
       v-dialogDrag
       :visible.sync="windowShow"
       width="500px"
@@ -19,33 +19,39 @@
         >
           <el-row>
             <el-col :span="20">
-              <el-form-item label="国家代码：" prop="code">
-                <el-input
-                  size="mini"
-                  @input="form.code = form.code.toUpperCase()"
+              <el-form-item label="站点：">
+                <el-select
                   v-model="form.code"
-                  placeholder="请输入国家代码"
+                  collapse-tags
+                  placeholder="请选择站点"
                   style="width: 100%"
-                ></el-input>
+                >
+                  <el-option
+                    v-for="item in ZDs"
+                    :key="item.value"
+                    :label="item.displayText"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="20">
-              <el-form-item label="国家名称：" prop="name">
-                <el-input
-                  size="mini"
-                  maxlength="200"
-                  v-model="form.name"
-                  placeholder="请输入国家名称"
-                ></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="是否启用：" prop="name">
-                <el-switch v-model="form.isEnable"></el-switch>
+              <el-form-item label="路线：" prop="lineId">
+                <el-select
+                  v-model="form.lineId"
+                  collapse-tags
+                  placeholder="请选择路线"
+                  style="width: 100%"
+                >
+                  <el-option
+                    v-for="item in Lines"
+                    :key="item.value"
+                    :label="item.displayText"
+                    :value="item.value"
+                  ></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -80,18 +86,19 @@
   </div>
 </template>
 <style lang="scss">
-.createCountry {
+.createLinSite {
   .el-dialog__body {
-    height: 280px;
+    height: 240px;
   }
 }
 </style>
 <script>
 import {
-  getCountryInfoById,
-  createorUpdateCountry,
-} from "api/publicBase/baseCountry";
+  getLinSiteInfoById,
+  createorUpdateLinSite,
+} from "api/publicBase/linSite";
 import { getDicListByDitType } from "api/publicBase/dictionaryMng";
+import { getSiteList, getLineList } from "api/publicBase/Combox";
 export default {
   components: {},
   props: {
@@ -112,8 +119,7 @@ export default {
         this.form = {
           id: "",
           code: "",
-          name: "",
-          isEnable: true,
+          lineId: "",
           remarks: "",
         };
         this.$emit("on-show-change", newValue);
@@ -128,24 +134,39 @@ export default {
       form: {
         id: "",
         code: "",
-        name: "",
-        isEnable: true,
+        lineId: "",
         remarks: "",
       },
       rules: {},
+      ZDs: [],
+      Lines: [],
     };
   },
   methods: {
-    //获取单个国家信息
-    getCountryInfoById(id) {
+    //添加查询combox
+    setComBox() {
+      getSiteList({
+        CountryCode: "",
+        IsEnable: true,
+      }).then((res) => {
+        this.ZDs = res.result;
+      });
+      getLineList({
+        Code: "",
+        IsEnable: true,
+      }).then((res) => {
+        this.Lines = res.result;
+      });
+    },
+    //获取单个路线信息
+    getLinSiteInfoById(id) {
       let _this = this;
       this.loading = true;
-      getCountryInfoById({ id: id })
+      getLinSiteInfoById({ id: id })
         .then((res) => {
           _this.form.id = res.result.id;
           _this.form.code = res.result.code;
-          _this.form.name = res.result.name;
-          _this.form.isEnable = res.result.isEnable;
+          _this.form.lineId = res.result.lineId;
           _this.form.remarks = res.result.remarks;
           this.loading = false;
         })
@@ -161,11 +182,10 @@ export default {
         let data = {
           id: this.form.id,
           code: this.form.code,
-          name: this.form.name,
-          isEnable: this.form.isEnable,
+          lineId: this.form.lineId,
           remarks: this.form.remarks,
         };
-        createorUpdateCountry(data)
+        createorUpdateLinSite(data)
           .then((res) => {
             this.btnLoading = false;
             this.windowShow = false;
@@ -176,6 +196,9 @@ export default {
           });
       }
     },
+  },
+  created() {
+    this.setComBox();
   },
 };
 </script>

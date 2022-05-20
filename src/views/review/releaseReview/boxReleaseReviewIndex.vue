@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container userMng">
+  <div class="app-container boxReleaseReview">
     <el-form size="mini" label-width="100px">
       <el-row style="margin-bottom: 10px">
         <el-col :span="3">
@@ -71,7 +71,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-row style="height: calc(70% - 110px)">
+    <el-row style="height: calc(70% - 150px)">
       <el-table
         :cell-class-name="tableRowClassName"
         :data="tableList"
@@ -86,7 +86,7 @@
         :cell-style="{ padding: '5px' }"
         style="width: 100%; height: 100%"
         ref="table"
-        @row-dbclick="onRowDbclick"
+        @row-click="onRowDbclick"
       >
         <!-- <el-table-column type="index" align="center" label="序号">
             <template slot-scope="scope">
@@ -100,38 +100,38 @@
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="BillNO"
+          prop="billNO"
           label="单号"
           show-overflow-tooltip
-          width="100"
+          width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="StartStation"
+          prop="startStation"
           label="起运站"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="EndStation"
+          prop="endStation"
           label="目的站"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="ReturnStation"
+          prop="returnStation"
           label="还箱地"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="IsInStock"
+          prop="isInStock"
           label="是否库存"
           show-overflow-tooltip
-          width="120"
+          width="100"
         >
           <template slot-scope="scope">
             {{ scope.row.IsInStock ? "是" : "否" }}
@@ -139,35 +139,51 @@
         </el-table-column>
         <el-table-column
           align="center"
-          prop="PredictTime"
+          prop="predictTime"
           label="预计到站时间"
           show-overflow-tooltip
-          width="200"
-        ></el-table-column>
+          width="145"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.predictTime | parseTime("{y}-{m}-{d} {h}:{i}:{s}") }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          prop="EffectiveSTime"
+          prop="effectiveSTime"
           label="有效时间起"
           show-overflow-tooltip
-          width="120"
-        ></el-table-column>
+          width="145"
+        >
+          <template slot-scope="scope">
+            {{
+              scope.row.effectiveSTime | parseTime("{y}-{m}-{d} {h}:{i}:{s}")
+            }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          prop="EffectiveETime"
+          prop="effectiveETime"
           label="有效时间止"
           show-overflow-tooltip
-          width="120"
-        ></el-table-column>
+          width="145"
+        >
+          <template slot-scope="scope">
+            {{
+              scope.row.effectiveETime | parseTime("{y}-{m}-{d} {h}:{i}:{s}")
+            }}
+          </template>
+        </el-table-column>
         <el-table-column
           align="center"
-          prop="SellingPrice"
+          prop="sellingPrice"
           label="租金"
           show-overflow-tooltip
           width="190"
         ></el-table-column>
         <el-table-column
           align="center"
-          prop="Line"
+          prop="lineName"
           label="所属路线"
           show-overflow-tooltip
           width="80"
@@ -201,6 +217,13 @@
           show-overflow-tooltip
           width="80"
         ></el-table-column> -->
+        <el-table-column
+          align="center"
+          prop="remarks"
+          label="备注"
+          show-overflow-tooltip
+          min-width="80"
+        ></el-table-column>
         <el-table-column align="center" label="操作" width="140px">
           <template slot-scope="scope">
             <div
@@ -213,7 +236,7 @@
             </div>
             <div
               class="tableBtn"
-              @click="openUpdateUserComp(scope.row)"
+              @click="openInfoComp(scope.row)"
               v-if="search.IsVerify"
             >
               详情
@@ -234,7 +257,7 @@
       </el-pagination>
     </el-row>
     <el-row style="height: calc(30%)">
-      <Box-Details ref="boxDetailsComp" style="margin-top: 30px"></Box-Details>
+      <Box-Details ref="boxDetailsComp" style="margin-top: 50px"></Box-Details>
     </el-row>
     <Box-Release
       ref="createBoxComp"
@@ -245,33 +268,8 @@
   </div>
 </template>
 <style lang="scss">
-.userMng {
-  .chsEqp {
-    width: 100%;
-    .textPromt {
-      float: left;
-    }
-    .chsEqp-select {
-      height: 26px;
-      line-height: 24px;
-    }
-    i {
-      float: right;
-      margin-top: 6px;
-    }
-  }
-  .editOrgComp-row-tree {
-    position: absolute;
-    top: 40px;
-    left: 70px;
-    background-color: #fff;
-    z-index: 10;
-    padding: 0;
-    margin: 0;
-    width: 300px;
-    height: 450px;
-    clear: both;
-  }
+.boxReleaseReview {
+  height: 100%;
 }
 </style>
 <script>
@@ -346,6 +344,7 @@ export default {
               this.$set(item, "pop1Show", false);
             });
             this.page.total = res.result.totalCount;
+            this.$refs.boxDetailsComp.tableList = [];
           }
         })
         .catch((err) => {
@@ -357,6 +356,13 @@ export default {
       this.createBoxComp.show = true;
       this.$refs.createBoxComp.pageType = "update";
       this.$refs.createBoxComp.getBoxReleaseInfoById(row.id);
+      this.$refs.createBoxComp.getfileList(row.id, row.billNO);
+    },
+    openInfoComp(row) {
+      this.createBoxComp.show = true;
+      this.$refs.createBoxComp.pageType = "info";
+      this.$refs.createBoxComp.getBoxReleaseInfoById(row.id);
+      this.$refs.createBoxComp.getfileList(row.id, row.billNO);
     },
     oncreateBoxCompShowChange(val) {
       this.createBoxComp.show = val;
@@ -387,7 +393,7 @@ export default {
       this.treeComp.show = val;
     },
     onRowDbclick(row, column, event) {
-      this.$refs.boxDetailsComp.search.BoxTenantId = row.Id;
+      this.$refs.boxDetailsComp.search.BoxTenantNO = row.billNO;
       this.$refs.boxDetailsComp.getTableList();
     },
   },

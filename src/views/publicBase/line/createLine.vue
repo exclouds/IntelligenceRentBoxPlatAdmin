@@ -1,7 +1,7 @@
 <template>
-  <div class="createCountry">
+  <div class="createLine">
     <el-dialog
-      :title="form.id ? '编辑国家资料' : '新增国家资料'"
+      :title="form.id ? '编辑路线资料' : '新增路线资料'"
       v-dialogDrag
       :visible.sync="windowShow"
       width="500px"
@@ -17,34 +17,34 @@
           :rules="rules"
           label-width="100px"
         >
-          <el-row>
+          <!-- <el-row>
             <el-col :span="20">
-              <el-form-item label="国家代码：" prop="code">
+              <el-form-item label="路线代码：" prop="code">
                 <el-input
                   size="mini"
                   @input="form.code = form.code.toUpperCase()"
                   v-model="form.code"
-                  placeholder="请输入国家代码"
+                  placeholder="请输入路线代码"
                   style="width: 100%"
                 ></el-input>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row>
             <el-col :span="20">
-              <el-form-item label="国家名称：" prop="name">
+              <el-form-item label="路线名称：" prop="lineName">
                 <el-input
                   size="mini"
                   maxlength="200"
-                  v-model="form.name"
-                  placeholder="请输入国家名称"
+                  v-model="form.lineName"
+                  placeholder="请输入路线名称"
                 ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
             <el-col :span="20">
-              <el-form-item label="是否启用：" prop="name">
+              <el-form-item label="是否启用：" prop="lineName">
                 <el-switch v-model="form.isEnable"></el-switch>
               </el-form-item>
             </el-col>
@@ -80,17 +80,14 @@
   </div>
 </template>
 <style lang="scss">
-.createCountry {
+.createLine {
   .el-dialog__body {
-    height: 280px;
+    height: 240px;
   }
 }
 </style>
 <script>
-import {
-  getCountryInfoById,
-  createorUpdateCountry,
-} from "api/publicBase/baseCountry";
+import { getLineInfoById, createorUpdateLine } from "api/publicBase/line";
 import { getDicListByDitType } from "api/publicBase/dictionaryMng";
 export default {
   components: {},
@@ -111,8 +108,8 @@ export default {
         //窗口关闭
         this.form = {
           id: "",
-          code: "",
-          name: "",
+          //code: "",
+          lineName: "",
           isEnable: true,
           remarks: "",
         };
@@ -127,8 +124,8 @@ export default {
       windowShow: this.pshow,
       form: {
         id: "",
-        code: "",
-        name: "",
+        //code: "",
+        lineName: "",
         isEnable: true,
         remarks: "",
       },
@@ -136,15 +133,15 @@ export default {
     };
   },
   methods: {
-    //获取单个国家信息
-    getCountryInfoById(id) {
+    //获取单个路线信息
+    getLineInfoById(id) {
       let _this = this;
       this.loading = true;
-      getCountryInfoById({ id: id })
+      getLineInfoById({ id: id })
         .then((res) => {
           _this.form.id = res.result.id;
-          _this.form.code = res.result.code;
-          _this.form.name = res.result.name;
+          //_this.form.code = res.result.code;
+          _this.form.lineName = res.result.lineName;
           _this.form.isEnable = res.result.isEnable;
           _this.form.remarks = res.result.remarks;
           this.loading = false;
@@ -160,12 +157,12 @@ export default {
         this.btnLoading = true;
         let data = {
           id: this.form.id,
-          code: this.form.code,
-          name: this.form.name,
+          //code: this.form.code,
+          lineName: this.form.lineName,
           isEnable: this.form.isEnable,
           remarks: this.form.remarks,
         };
-        createorUpdateCountry(data)
+        createorUpdateLine(data)
           .then((res) => {
             this.btnLoading = false;
             this.windowShow = false;
