@@ -12,28 +12,28 @@ const HOST = process.env.HOST;
 const PORT = process.env.PORT && Number(process.env.PORT);
 
 function resolve(dir) {
-    return path.join(__dirname, '..', dir);
+  return path.join(__dirname, '..', dir);
 }
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   mode: 'development',
-  devtool: config.dev.devtool, 
+  devtool: config.dev.devtool,
   // optimization: {
   //   nameModules: false,
   //   namedChunks: false
   // },
   module: {
     rules: [
-      ...utils.styleLoaders({sourceMap: config.dev.cssSourceMap, usePostCSS: true})
+      ...utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
     ]
   },
   devServer: {
     // disableHostCheck: true,
     clientLogLevel: 'warning',
     historyApiFallback: {
-        rewrites: [
-            {from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html')},
-        ],
+      rewrites: [
+        { from: /.*/, to: path.posix.join(config.dev.assetsPublicPath, 'index.html') },
+      ],
     },
     hot: true,
     contentBase: false, // since we use CopyWebpackPlugin.
@@ -42,14 +42,14 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     port: PORT || config.dev.port,
     open: config.dev.autoOpenBrowser,
     overlay: config.dev.errorOverlay
-        ? {warnings: false, errors: true}
-        : false,
+      ? { warnings: false, errors: true }
+      : false,
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
-        ignored: [/node_modules/, /lib/],
-        poll: config.dev.poll,
+      ignored: [/node_modules/, /lib/],
+      poll: config.dev.poll,
     }
   },
   plugins: [
@@ -60,12 +60,12 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new webpack.NoEmitOnErrorsPlugin(),
     //todo  研究CopyWebpackPlugin新版
     new CopyWebpackPlugin([{
-      
-          from: path.resolve(__dirname, '../static'),
-          to: config.dev.assetsSubDirectory,
-          ignore: ['.*']
-     
-      
+
+      from: path.resolve(__dirname, '../static'),
+      to: config.dev.assetsSubDirectory,
+      ignore: ['.*']
+
+
     }])
   ]
 })
@@ -73,25 +73,25 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 module.exports = new Promise((resolve, reject) => {
   portfinder.basePort = process.env.PORT || config.dev.port;
   portfinder.getPort((err, port) => {
-      if (err) {
-          reject(err);
-      } else {
-          // publish the new Port, necessary for e2e tests
-          process.env.PORT = port;
-          // add port to devServer config
-          devWebpackConfig.devServer.port = port;
+    if (err) {
+      reject(err);
+    } else {
+      // publish the new Port, necessary for e2e tests
+      process.env.PORT = port;
+      // add port to devServer config
+      devWebpackConfig.devServer.port = port;
 
-          // Add FriendlyErrorsPlugin
-          devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
-              compilationSuccessInfo: {
-                  messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
-              },
-              // onErrors: config.dev.notifyOnErrors
-              //     ? utils.createNotifierCallback()
-              //     : undefined
-          }));
+      // Add FriendlyErrorsPlugin
+      devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({
+        compilationSuccessInfo: {
+          messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
+        },
+        // onErrors: config.dev.notifyOnErrors
+        //     ? utils.createNotifierCallback()
+        //     : undefined
+      }));
 
-          resolve(devWebpackConfig);
-      }
+      resolve(devWebpackConfig);
+    }
   });
 });

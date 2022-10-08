@@ -155,10 +155,10 @@ export default {
 
       this.tableData = [];
 
-      this.table.loading = true;
+      //this.table.loading = true;
       getBoxDetailsInfoList(data)
         .then((res) => {
-          this.table.loading = false;
+          //this.table.loading = false;
           if (res.success) {
             this.tableList = res.result.items;
             this.tableList.forEach((item) => {
@@ -169,7 +169,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.table.loading = false;
+          //this.table.loading = false;
         });
     },
     //添加或修改用户成功事件

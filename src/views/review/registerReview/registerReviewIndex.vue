@@ -181,7 +181,7 @@
             </div>
             <div
               class="tableBtn"
-              @click="openUpdateUserComp(scope.row)"
+              @click="openInfoUserComp(scope.row)"
               v-if="search.IsVerify"
             >
               <!-- v-if="checkBtnPeimission(RegisterReview.review.permission)" -->

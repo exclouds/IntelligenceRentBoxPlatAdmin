@@ -4,12 +4,25 @@
       <el-row style="margin-bottom: 10px">
         <el-col :span="4">
           <el-form-item label="起运站：" prop="startStation">
-            <el-select
+            <big-data-select
+              class="cusEnabled"
+              :val.sync="search.startStation"
+              placeholder="请选择起运站"
+              style="width: 100%"
+              size="mini"
+              clearable
+              filterable
+              :data="qyz"
+              optionkey="displayText"
+              optionValue="value"
+            ></big-data-select>
+            <!-- <el-select
               v-model="search.startStation"
               collapse-tags
               placeholder="请选择起运站"
               style="width: 100%"
-              readonly
+              clearable
+              filterable
             >
               <el-option
                 v-for="item in qyz"
@@ -17,17 +30,30 @@
                 :label="item.displayText"
                 :value="item.value"
               ></el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="目的站：" prop="endStation">
-            <el-select
+            <big-data-select
+              class="cusEnabled"
+              :val.sync="search.endStation"
+              placeholder="请选择目的站"
+              style="width: 100%"
+              size="mini"
+              clearable
+              filterable
+              :data="qyz"
+              optionkey="displayText"
+              optionValue="value"
+            ></big-data-select>
+            <!-- <el-select
               v-model="search.endStation"
               collapse-tags
               placeholder="请选择目的站"
               style="width: 100%"
-              readonly
+              clearable
+              filterable
             >
               <el-option
                 v-for="item in mdz"
@@ -35,7 +61,7 @@
                 :label="item.displayText"
                 :value="item.value"
               ></el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
         </el-col>
         <el-col :span="8">
@@ -203,44 +229,43 @@
           prop="hopePrice"
           label="期望成交价"
           show-overflow-tooltip
-          width="190"
+          width="100"
         ></el-table-column>
         <el-table-column
           align="center"
           prop="inquiryNum"
           label="询价次数"
           show-overflow-tooltip
-          width="190"
+          width="80"
         ></el-table-column>
-        <!-- <el-table-column
-          align="center"
-          prop="isEnable"
-          label="是否启用"
-          show-overflow-tooltip
-          width="120"
-        >
-          <template slot-scope="scope">
-            {{ scope.row.IsEnable ? "是" : "否" }}
-          </template>
-        </el-table-column>
         <el-table-column
           align="center"
-          prop="isVerify"
-          label="是否审核"
-          show-overflow-tooltip
-          width="120"
-        >
-          <template slot-scope="scope">
-            {{ scope.row.IsVerify ? "是" : "否" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="verifyRem"
-          label="审核评语"
+          prop="createName"
+          label="制单人"
           show-overflow-tooltip
           width="80"
-        ></el-table-column> -->
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="company"
+          label="公司"
+          show-overflow-tooltip
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="telNumber"
+          label="电话"
+          show-overflow-tooltip
+          width="120"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="phoneNumber"
+          label="手机"
+          show-overflow-tooltip
+          width="110"
+        ></el-table-column>
         <el-table-column
           align="center"
           prop="remarks"
@@ -248,24 +273,20 @@
           show-overflow-tooltip
           min-width="80"
         ></el-table-column>
-        <!-- <el-table-column align="center" label="操作" width="140px">
+        <el-table-column
+          align="center"
+          label="操作"
+          width="140px"
+          fixed="right"
+        >
           <template slot-scope="scope">
-            <div
-              class="tableBtn"
-              @click="openUpdateUserComp(scope.row)"
-              v-if="!search.IsVerify"
-            >
-              审核
-            </div>
-            <div
-              class="tableBtn"
-              @click="openUpdateUserComp(scope.row)"
-              v-if="search.IsVerify"
-            >
-              详情
-            </div>
+            <div class="tableBtn" @click="openInfoComp(scope.row)">详情</div>
+            &nbsp;&nbsp;<img
+              src="../../../static/img/end.png"
+              style="vertical-align: middle"
+            />
           </template>
-        </el-table-column> -->
+        </el-table-column>
       </el-table>
       <el-pagination
         style="margin-top: 10px"
@@ -282,6 +303,12 @@
     <el-row style="height: calc(30%)">
       <Box-Details ref="boxDetailsComp" style="margin-top: 50px"></Box-Details>
     </el-row>
+    <Tenant-Release
+      ref="createTenantComp"
+      :pshow="createTenantComp.show"
+      @on-show-change="oncreateTenantCompShowChange"
+      @on-save-success="onSaveSuccess"
+    ></Tenant-Release>
   </div>
 </template>
 <style lang="scss">
@@ -317,6 +344,7 @@
 <script>
 import { tableMixin } from "mixin/commTable";
 import boxDetailsIndex from "./boxDetailsIndex";
+import tenantReleaseReviewInfoIndex from "../review/releaseReview/tenantReleaseReviewInfoIndex";
 import { getTenantReleaseInfoList } from "api/releaseReview/tenantReleaseReview";
 import { warnMsg, successMsg } from "utils/messageBox";
 import { checkBtnPeimission, RegisterReview } from "utils/btnRole";
@@ -325,6 +353,7 @@ export default {
   name: "tenantReleaseQueryIndex",
   mixins: [tableMixin],
   components: {
+    "Tenant-Release": tenantReleaseReviewInfoIndex,
     "Box-Details": boxDetailsIndex,
   },
   data() {
@@ -403,11 +432,12 @@ export default {
           this.table.loading = false;
         });
     },
-    //打开修改箱东信息窗口
-    openUpdateUserComp(row) {
+    //打开详情租客信息窗口
+    openInfoComp(row) {
       this.createTenantComp.show = true;
-      this.$refs.createTenantComp.pageType = "update";
+      this.$refs.createTenantComp.pageType = "info";
       this.$refs.createTenantComp.getTenantReleaseInfoById(row.id);
+      this.$refs.createTenantComp.getfileList(row.id, row.billNO);
     },
     oncreateTenantCompShowChange(val) {
       this.createTenantComp.show = val;

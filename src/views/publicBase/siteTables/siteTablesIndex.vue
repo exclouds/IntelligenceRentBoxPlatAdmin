@@ -95,6 +95,14 @@
         ></el-table-column>
         <el-table-column
           align="center"
+          prop="enSiteName"
+          sortable="custom"
+          show-overflow-tooltip
+          label="英文名称"
+          min-width="9%"
+        ></el-table-column>
+        <el-table-column
+          align="center"
           prop="countryCode"
           sortable="custom"
           show-overflow-tooltip

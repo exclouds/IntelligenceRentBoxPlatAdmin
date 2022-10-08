@@ -44,6 +44,18 @@
           </el-row>
           <el-row>
             <el-col :span="20">
+              <el-form-item label="英文名称：" prop="name">
+                <el-input
+                  size="mini"
+                  maxlength="200"
+                  v-model="form.enSiteName"
+                  placeholder="请输入站点名称"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="20">
               <el-form-item label="国家：" prop="name">
                 <el-select
                   v-model="form.countryCode"
@@ -102,7 +114,7 @@
 <style lang="scss">
 .createSiteTables {
   .el-dialog__body {
-    height: 300px;
+    height: 360px;
   }
 }
 </style>
@@ -134,6 +146,7 @@ export default {
           id: "",
           code: "",
           siteName: "",
+          enSiteName: "",
           countryCode: "",
           isEnable: true,
           remarks: "",
@@ -152,6 +165,7 @@ export default {
         code: "",
         countryCode: "",
         siteName: "",
+        enSiteName: "",
         isEnable: true,
         remarks: "",
       },
@@ -177,6 +191,7 @@ export default {
           _this.form.code = res.result.code;
           _this.form.countryCode = res.result.countryCode;
           _this.form.siteName = res.result.siteName;
+          _this.form.enSiteName = res.result.enSiteName;
           _this.form.isEnable = res.result.isEnable;
           _this.form.remarks = res.result.remarks;
           this.loading = false;
@@ -194,6 +209,7 @@ export default {
           id: this.form.id,
           code: this.form.code,
           siteName: this.form.siteName,
+          enSiteName: this.form.enSiteName,
           countryCode: this.form.countryCode,
           isEnable: this.form.isEnable,
           remarks: this.form.remarks,

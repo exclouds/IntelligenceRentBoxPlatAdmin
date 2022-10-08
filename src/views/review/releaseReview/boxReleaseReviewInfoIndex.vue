@@ -1,7 +1,7 @@
 <template>
   <div class="createUser">
     <el-dialog
-      :title="'箱东发布信息审批'"
+      :title="'箱东发布信息'"
       v-dialogDrag
       :visible.sync="windowShow"
       width="1200px"
@@ -22,10 +22,9 @@
                 <el-form-item label="单号：" prop="billNo">
                   <el-input
                     size="mini"
-                    maxlength="10"
                     v-model="form.billNo"
                     placeholder="请输入单号"
-                    disabled
+                    readonly
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -87,9 +86,9 @@
                   </el-select>
                 </el-form-item>
               </el-col>
-              <el-col :span="12">
+              <!-- <el-col :span="12">
                 <el-form-item label="是否库存：" prop="isInStock">
-                  <el-switch v-model="form.isInStock" disabled></el-switch>
+                  <el-switch v-model="form." disabled></el-switch>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -106,15 +105,14 @@
                     disabled
                   />
                 </el-form-item>
-              </el-col>
+              </el-col> -->
               <el-col :span="12">
                 <el-form-item label="租金：" prop="sellingPrice">
                   <el-input
                     size="mini"
-                    maxlength="10"
                     v-model="form.sellingPrice"
                     placeholder=""
-                    disabled
+                    readonly
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -147,7 +145,6 @@
                 </el-form-item>
               </el-col>
             </el-row>
-
             <el-row>
               <el-col :span="12">
                 <el-form-item label="所属路线：" prop="line">
@@ -167,6 +164,52 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :span="12">
+                <el-form-item label="制单人：" prop="createName">
+                  <el-input
+                    size="mini"
+                    v-model="form.createName"
+                    placeholder=""
+                    readonly
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="公司：" prop="company">
+                  <el-input
+                    size="mini"
+                    v-model="form.company"
+                    placeholder=""
+                    readonly
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="电话：" prop="telNumber">
+                  <el-input
+                    size="mini"
+                    maxlength="13"
+                    v-model="form.telNumber"
+                    placeholder=""
+                    readonly
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="手机：" prop="phoneNumber">
+                  <el-input
+                    size="mini"
+                    maxlength="13"
+                    v-model="form.phoneNumber"
+                    placeholder=""
+                    readonly
+                  ></el-input>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
@@ -177,21 +220,25 @@
                     :autosize="{ minRows: 5, maxRows: 5 }"
                     v-model="form.remarks"
                     placeholder=""
-                    disabled
+                    readonly
                   ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
-                <el-form-item label="审批意见：" prop="verifyRem">
+                <el-form-item
+                  label="审批意见："
+                  prop="verifyRem"
+                  v-if="pageType != 'recomInfo'"
+                >
                   <el-input
                     type="textarea"
                     :maxlength="500"
                     :autosize="{ minRows: 5, maxRows: 5 }"
                     v-model="form.verifyRem"
                     placeholder=""
-                    :disabled="pageType == 'info'"
+                    :readonly="pageType == 'info'"
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -321,6 +368,12 @@
     color: #606266;
     cursor: not-allowed;
   }
+  .el-textarea.is-disabled .el-textarea__inner {
+    background-color: #f5f7fa;
+    border-color: #e4e7ed;
+    color: #606266;
+    cursor: not-allowed;
+  }
 }
 </style>
 <script>
@@ -362,14 +415,18 @@ export default {
           startStation: "",
           endStation: "",
           returnStation: "",
-          isInStock: undefined,
-          predictTime: undefined,
+          //isInStock: undefined,
+          //predictTime: undefined,
           effectiveSTime: undefined,
           effectiveETime: undefined,
           sellingPrice: 0,
           line: "1",
           remarks: "",
           verifyRem: "",
+          createName: "",
+          company: "",
+          telNumber: "",
+          phoneNumber: "",
         };
         this.filelist = [];
         this.treeComp.choosedTreeNodeId = [];
@@ -387,14 +444,18 @@ export default {
         startStation: "",
         endStation: "",
         returnStation: "",
-        isInStock: undefined,
-        predictTime: undefined,
+        //: undefined,
+        //predictTime: undefined,
         effectiveSTime: undefined,
         effectiveETime: undefined,
         sellingPrice: 0,
         line: "1",
         remarks: "",
         verifyRem: "",
+        createName: "",
+        company: "",
+        telNumber: "",
+        phoneNumber: "",
       },
       rules: {},
       ZDs: [],
@@ -464,19 +525,23 @@ export default {
     //获取单个用户
     getBoxReleaseInfoById(boxId) {
       getBoxReleaseInfoById({ id: boxId }).then((res) => {
-        this.form.id = res.result.id;
-        this.form.billNo = res.result.billNO;
-        this.form.startStation = res.result.startStation;
-        this.form.endStation = res.result.endStation;
-        this.form.returnStation = res.result.returnStation;
-        this.form.isInStock = res.result.isInStock;
-        this.form.predictTime = res.result.predictTime;
-        this.form.effectiveSTime = res.result.effectiveSTime;
-        this.form.effectiveETime = res.result.effectiveETime;
-        this.form.sellingPrice = res.result.sellingPrice;
-        this.form.line = res.result.line.toString();
-        this.form.remarks = res.result.remarks;
-        this.form.verifyRem = res.result.verifyRem;
+        this.form.id = res.result.boxInfo.id;
+        this.form.billNo = res.result.boxInfo.billNO;
+        this.form.startStation = res.result.boxInfo.startStation;
+        this.form.endStation = res.result.boxInfo.endStation;
+        this.form.returnStation = res.result.boxInfo.returnStation;
+        //this.form.isInStock = res.result.boxInfo.isInStock;
+        //this.form.predictTime = res.result.boxInfo.predictTime;
+        this.form.effectiveSTime = res.result.boxInfo.effectiveSTime;
+        this.form.effectiveETime = res.result.boxInfo.effectiveETime;
+        this.form.sellingPrice = res.result.boxInfo.sellingPrice;
+        this.form.line = res.result.boxInfo.line.toString();
+        this.form.remarks = res.result.boxInfo.remarks;
+        this.form.verifyRem = res.result.boxInfo.verifyRem;
+        this.form.createName = res.result.createName;
+        this.form.company = res.result.company;
+        this.form.telNumber = res.result.telNumber;
+        this.form.phoneNumber = res.result.phoneNumber;
       });
     },
     //提交

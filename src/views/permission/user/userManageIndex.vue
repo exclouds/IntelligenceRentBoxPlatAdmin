@@ -22,7 +22,7 @@
           >
             <!-- <el-cascader :options="treeComp.data" clearable  filterable style="width:100%" :props="SetKesDept"></el-cascader> -->
 
-            <tree-select
+            <!-- <tree-select
               ref="chooseEquNode"
               @on-treeShow-change="ontreeShowChange"
               :choosedEquipmentNode="choosedTreeNode"
@@ -37,7 +37,21 @@
                 @on-nodeChange="onNodeClick"
                 @on-outside-click="onClickOutSide"
               ></tree>
-            </div>
+            </div> -->
+            <el-select
+              v-model="search.code"
+              placeholder="请选择公司"
+              style="width: 100%"
+              @change="onOrgChange()"
+              clearable
+            >
+              <el-option
+                v-for="item in treeComp.data"
+                :key="item.nodeId"
+                :label="item.nodeName"
+                :value="item.nodeUUid"
+              ></el-option>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="4">
@@ -48,10 +62,9 @@
           >
             <el-select
               v-model="search.deptcodes"
-              multiple
-              collapse-tags
               placeholder="请选择部门"
               style="width: 100%"
+              clearable
             >
               <el-option
                 v-for="item in deptreeComp.data"
@@ -499,6 +512,9 @@ export default {
       getOrganizatonTreeNoUsers().then((res) => {
         if (res.success) this.treeComp.data = res.result;
       });
+    },
+    onOrgChange() {
+      this.getdeplist();
     },
     //根据公司获取部门
     getdeplist() {

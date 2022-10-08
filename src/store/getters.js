@@ -3,7 +3,7 @@ const getters = {
   visitedViews: state => state.app.visitedViews,
   cachedViews: state => state.app.cachedViews,
   token: state => state.user.token,
-  tenantId:state => state.user.tenantId,   //租户
+  tenantId: state => state.user.tenantId,   //租户
   permission: state => state.user.permission,   //权限码
   avatar: state => state.user.avatar,
   userId: state => state.user.id,
@@ -23,6 +23,7 @@ const getters = {
   allRoutes: state => state.permission.allRoutes,
   addRouters: state => state.permission.addRouters,
   permissionMenus: state => state.user.permissionMenus,
-  socket:state => state.app.socket,
+  socket: state => state.app.socket,
+  webSocketMsg: state => state.user.webSocketMsg
 };
 export default getters

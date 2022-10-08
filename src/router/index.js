@@ -11,6 +11,8 @@ import {
   ReportSpecialFee, InsideTransaction, NonOperatIncome, OtherInsideTransaction,
   countryPage, BUReportExport, LockAccount, OriginalBudgetImport, RegionalCost, RegisterReview
 } from 'utils/btnRole'
+import imServer from '@/components/imServer/imServer'
+import imClient from '@/components/imClient/imClient'
 Vue.use(Router);
 
 /* layout */
@@ -238,56 +240,6 @@ export const asyncRouterMap = [
         },
         //btn: RegisterReview
       },
-      // {
-      //   path: 'budgetImportIndex',
-      //   component: () => import('@/views/DataImport/Budget/BudgetImportIndex').then(m => m.default),
-      //   name: 'budgetImportIndex',
-      //   meta: {
-      //     title: '预算导入',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.BudgetImport']
-      //   },
-      //   btn: budimport
-      // },
-      // {
-      //   path: 'SubjectAssistanceImportIndex',
-      //   component: () => import('@/views/DataImport/SubjectAssistance/SubjectAssistanceImportIndex').then(m => m.default),
-      //   name: 'SubjectAssistanceImportIndex',
-      //   meta: {
-      //     title: '科目辅助余额数据导入',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.AccountBalanceImport']
-      //   },
-      //   btn: AccountBalanceImport
-      // },
-
-      // {
-      //   path: 'AnalysisReportImportIndex',
-      //   component: () => import('@/views/DataImport/AnalysisReport/AnalysisReportImportIndex').then(m => m.default),
-      //   name: 'AnalysisReportImportIndex',
-      //   meta: {
-      //     title: '合资公司经营分析报表导入',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.AnalysisReportImport']
-      //   },
-      //   btn: AnalysisReportImport
-      // },
-      // {
-      //   path: 'OriginalBudgetImportIndex',
-      //   component: () => import('@/views/DataImport/OriginalBudget/OriginalBudgetImportIndex').then(m => m.default),
-      //   name: 'OriginalBudgetImportIndex',
-      //   meta: {
-      //     title: '2020年报表导入',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.OriginalBudgetImport']
-      //   },
-      //   btn: OriginalBudgetImport
-      // },
-
     ]
   },
   //
@@ -324,7 +276,7 @@ export const asyncRouterMap = [
           //roles: ['Customs.SpecialFee']
         },
         //btn: specialfee
-      },//boxTenantOrderQueryIndex
+      },
       {
         path: 'boxTenantOrderQueryIndex',
         component: () => import('@/views/query/boxTenantOrderQueryIndex').then(m => m.default),
@@ -337,256 +289,46 @@ export const asyncRouterMap = [
         },
         //btn: specialfee
       },
-      // {
-      //   path: 'ReportSpecialFeeIndex',
-      //   component: () => import('@/views/DataMaintenance/ReportSpecialFee/ReportSpecialFeeIndex').then(m => m.default),
-      //   name: 'ReportSpecialFeeIndex',
-      //   meta: {
-      //     title: '集团报表特殊费用维护',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.ReportSpecialFee']
-      //   },
-      //   btn: ReportSpecialFee
-      // },
-      // {
-      //   path: 'InsideTransactionIndex',
-      //   component: () => import('@/views/DataMaintenance/InsideTransaction/InsideTransactionIndex').then(m => m.default),
-      //   name: 'InsideTransactionIndex',
-      //   meta: {
-      //     title: '内部交易抵消费用维护',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.InsideTransaction']
-      //   },
-      //   btn: InsideTransaction
-      // },
-      // {
-      //   path: 'OtherInsideTransactionIndex',
-      //   component: () => import('@/views/DataMaintenance/OtherInsideTransaction/OtherInsideTransactionIndex').then(m => m.default),
-      //   name: 'OtherInsideTransactionIndex',
-      //   meta: {
-      //     title: '集团2内部交易抵消费用维护',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.OtherInsideTransact']
-      //   },
-      //   btn: OtherInsideTransaction
-      // },
-      // {
-      //   path: 'NonOperatIncomeIndex',
-      //   component: () => import('@/views/DataMaintenance/NonOperatIncome/NonOperatIncomeIndex').then(m => m.default),
-      //   name: 'NonOperatIncomeIndex',
-      //   meta: {
-      //     title: '非经营性收支费用维护',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.NonOperatIncome']
-      //   },
-      //   btn: NonOperatIncome
-      // },
-      // {
-      //   path: 'AccountSpecialFeeIndex',
-      //   component: () => import('@/views/DataMaintenance/AccountSpecialFee/AccountSpecialFeeIndex').then(m => m.default),
-      //   name: 'AccountSpecialFeeIndex',
-      //   meta: {
-      //     title: '调整事项单据维护',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.AccountSpecialFee']
-      //   },
-      //   btn: AccountSpecialFee
-      // },
-      // {
-      //   path: 'RegionalCostIndex',
-      //   component: () => import('@/views/DataMaintenance/RegionalCost/RegionalCostIndex').then(m => m.default),
-      //   name: 'RegionalCostIndex',
-      //   meta: {
-      //     title: '大区费用分摊',
-      //     icon: '个人客户',
-      //     keepAlive: true,
-      //     roles: ['Customs.RegionalCost']
-      //   },
-      //   btn: RegionalCost
-      // },
-
+      {
+        path: 'interRecomQuery',
+        component: () => import('@/views/query/interRecomQuery').then(m => m.default),
+        name: 'interRecomQuery',
+        meta: {
+          title: '智能推荐',
+          icon: '个人客户',
+          keepAlive: true,
+          //roles: ['Customs.SpecialFee']
+        },
+        //btn: specialfee
+      },
     ]
   },
-
-  //报表查询导出
-  // {
-  //   path: '/ReportFunction',
-  //   component: Layout,
-  //   redirect: '/tools/index',
-  //   alwaysShow: true,
-  //   meta: {
-  //     title: '报表查询导出',
-  //     icon: '个人客户',
-  //   },
-  //   children: [
-  //     {
-  //       path: 'BudgetReportIndex',
-  //       component: () => import('@/views/ReportFunction/BudgetReport/BudgetReportIndex').then(m => m.default),
-  //       name: 'BudgetReportIndex',
-  //       meta: {
-  //         title: '报表查询',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.ReportExport']
-  //       },
-  //       btn: reportquery
-  //     },
-  //     {
-  //       path: 'BUReportIndex',
-  //       component: () => import('@/views/ReportFunction/BUReport/BUReportIndex').then(m => m.default),
-  //       name: 'BUReportIndex',
-  //       meta: {
-  //         title: ' BU报表查询',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.BUReportExport']
-  //       },
-  //       btn: BUReportExport
-  //     },
-  //     {
-  //       path: 'SpecialFeeReportIndex',
-  //       component: () => import('@/views/ReportFunction/SpecialFeeReport/SpecialFeeReportIndex').then(m => m.default),
-  //       name: 'SpecialFeeReportIndex',
-  //       meta: {
-  //         title: ' 特殊费用报表查询',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.SpecialFeeReportExport']
-  //       },
-
-  //     },
-  //     {
-  //       path: 'RegionReportIndex',
-  //       component: () => import('@/views/ReportFunction/RegionReport/RegionReportIndex').then(m => m.default),
-  //       name: 'RegionReportIndex',
-  //       meta: {
-  //         title: ' 大区报表查询',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.RegionReportExport']
-  //       },
-
-  //     },
-  //     {
-  //       path: 'ZHYReportIndex',
-  //       component: () => import('@/views/ReportFunction/ZHYReport/ZHYReportIndex').then(m => m.default),
-  //       name: 'ZHYReportIndex',
-  //       meta: {
-  //         title: ' 中航运汇总报表查询',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.ZHYReportExport']
-  //       },
-
-  //     },
-  //     {
-  //       path: 'BUSummaryReportIndex',
-  //       component: () => import('@/views/ReportFunction/BUSummaryReport/BUSummaryReportIndex').then(m => m.default),
-  //       name: 'BUSummaryReportIndex',
-  //       meta: {
-  //         title: ' 集团1报表查询',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.BUSummaryExport']
-  //       },
-
-  //     },
-  //     {
-  //       path: 'FeeInsideReportIndex',
-  //       component: () => import('@/views/ReportFunction/BUSummaryReport/FeeInsideReportIndex').then(m => m.default),
-  //       name: 'FeeInsideReportIndex',
-  //       meta: {
-  //         title: '费用汇总表',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.FEEBUSummaryExport']
-  //       },
-
-  //     },
-  //     {
-  //       path: 'NonOperatReportIndex',
-  //       component: () => import('@/views/ReportFunction/NonOperatReport/NonOperatReportIndex').then(m => m.default),
-  //       name: 'NonOperatReportIndex',
-  //       meta: {
-  //         title: ' 集团2报表查询',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.NonOperatExport']
-  //       },
-
-  //     },
-  //     {
-  //       path: 'Report3Index',
-  //       component: () => import('@/views/ReportFunction/Report/Report3Index').then(m => m.default),
-  //       name: 'Report3Index',
-  //       meta: {
-  //         title: '集团3报表查询',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.Report3Export']
-  //       },
-  //       btn: reportquery
-  //     },
-  //     {
-  //       path: 'NewBudgetReportIndex',
-  //       component: () => import('@/views/ReportFunction/NewBudgetReport/NewBudgetReportIndex').then(m => m.default),
-  //       name: 'NewBudgetReportIndex',
-  //       meta: {
-  //         title: '报表查询（比对）',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.ReportExport']
-  //       },
-  //       btn: reportquery
-  //     },
-
-  //     {
-  //       path: 'BUAnalyzeIndex',
-  //       component: () => import('@/views/ReportFunction/BUAnalyze/BUAnalyzeIndex').then(m => m.default),
-  //       name: 'BUAnalyzeIndex',
-  //       meta: {
-  //         title: 'BU分析报表',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.BUAnalyzeExport']
-  //       },
-  //       btn: reportquery
-  //     },
-  //     {
-  //       path: 'GroupAnalyzeIndex',
-  //       component: () => import('@/views/ReportFunction/GroupAnalyze/GroupAnalyzeIndex').then(m => m.default),
-  //       name: 'GroupAnalyzeIndex',
-  //       meta: {
-  //         title: '集团分析报表',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.GroupAnalyzeExport']
-  //       },
-  //       btn: reportquery
-  //     },
-  //     {
-  //       path: 'RegionAnalyzeIndex',
-  //       component: () => import('@/views/ReportFunction/RegionAnalyze/RegionAnalyzeIndex').then(m => m.default),
-  //       name: 'RegionAnalyzeIndex',
-  //       meta: {
-  //         title: '大区分析报表',
-  //         icon: '个人客户',
-  //         keepAlive: true,
-  //         roles: ['Customs.RegionAnalyzeExport']
-  //       },
-
-  //     },
-
-
-  //   ]
-  // },
-
-
+  {
+    path: '/imChat',
+    component: Layout,
+    redirect: '/tools/index',
+    alwaysShow: true,
+    meta: {
+      title: '客服中心',
+      icon: '个人客户',
+    },
+    children: [
+      {
+        path: 'imChatServer',
+        component: () => import('@/views/imChat/imChatServer').then(m => m.default),
+        name: 'imChatServer',
+        meta: {
+          title: '客服上线',
+          icon: '个人客户',
+          keepAlive: true,
+          //roles: ['Customs.SpecialFee']
+        },
+        //btn: specialfee
+      },
+    ]
+  }
+  // { path: '/imServer', name: 'imServer', component: imServer },
+  // { path: '/imClient', name: 'imClient', component: imClient },
 ]
 
 

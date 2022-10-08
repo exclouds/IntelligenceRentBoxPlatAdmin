@@ -131,7 +131,7 @@
           prop="effectiveSTime"
           label="有效时间起"
           show-overflow-tooltip
-          width="165"
+          width="145"
         >
           <template slot-scope="scope">
             {{
@@ -144,7 +144,7 @@
           prop="effectiveETime"
           label="有效时间止"
           show-overflow-tooltip
-          width="165"
+          width="145"
         >
           <template slot-scope="scope">
             {{
@@ -157,7 +157,35 @@
           prop="hopePrice"
           label="期望成交价"
           show-overflow-tooltip
-          width="190"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="createName"
+          label="制单人"
+          show-overflow-tooltip
+          width="80"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="company"
+          label="公司"
+          show-overflow-tooltip
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="telNumber"
+          label="电话"
+          show-overflow-tooltip
+          width="120"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="phoneNumber"
+          label="手机"
+          show-overflow-tooltip
+          width="110"
         ></el-table-column>
         <!-- <el-table-column
           align="center"
@@ -195,7 +223,12 @@
           show-overflow-tooltip
           min-width="80"
         ></el-table-column>
-        <el-table-column align="center" label="操作" width="140px">
+        <el-table-column
+          align="center"
+          label="操作"
+          width="140px"
+          fixed="right"
+        >
           <template slot-scope="scope">
             <div
               class="tableBtn"
@@ -347,19 +380,19 @@ export default {
           this.table.loading = false;
         });
     },
-    //打开修改箱东信息窗口
+    //打开修改租客信息窗口
     openUpdateUserComp(row) {
       this.createTenantComp.show = true;
       this.$refs.createTenantComp.pageType = "update";
       this.$refs.createTenantComp.getTenantReleaseInfoById(row.id);
-      this.$refs.createTenantComp.getfileList(row.id);
+      this.$refs.createTenantComp.getfileList(row.id, row.billNO);
     },
-    //打开修改箱东信息窗口
+    //打开详情租客信息窗口
     openInfoComp(row) {
       this.createTenantComp.show = true;
       this.$refs.createTenantComp.pageType = "info";
       this.$refs.createTenantComp.getTenantReleaseInfoById(row.id);
-      this.$refs.createTenantComp.getfileList(row.id);
+      this.$refs.createTenantComp.getfileList(row.id, row.billNO);
     },
     oncreateTenantCompShowChange(val) {
       this.createTenantComp.show = val;

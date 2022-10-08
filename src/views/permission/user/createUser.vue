@@ -59,7 +59,6 @@
                     </div>  -->
               <el-select
                 v-model="form.choosedTreeNode"
-                multiple
                 collapse-tags
                 clearable
                 filterable

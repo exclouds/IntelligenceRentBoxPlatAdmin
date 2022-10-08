@@ -20,7 +20,6 @@
             <el-form-item label="真实姓名：" prop="realName">
               <el-input
                 size="mini"
-                maxlength="10"
                 v-model="form.realName"
                 placeholder=""
                 disabled
@@ -32,7 +31,6 @@
               <el-input
                 size="mini"
                 v-model="form.userName"
-                maxlength="20"
                 placeholder=""
                 disabled
               ></el-input>
@@ -159,7 +157,7 @@
                 :autosize="{ minRows: 5, maxRows: 5 }"
                 v-model="form.VerifyRem"
                 placeholder=""
-                :disabled="pageType == 'info'"
+                :disabled="pageType === 'info'"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -170,14 +168,14 @@
           type="primary"
           @click="save(true)"
           size="small"
-          v-if="pageType == 'update'"
+          v-if="pageType === 'update'"
           >通过</el-button
         >
         <el-button
           type="danger"
           @click="save(false)"
           size="small"
-          v-if="pageType == 'update'"
+          v-if="pageType === 'update'"
           >不通过</el-button
         >
         <el-button @click="windowShow = false" size="small">取 消</el-button>
@@ -218,8 +216,14 @@
     height: 450px;
     clear: both;
   }
-  .el-input__inner {
-    background-color: white;
+  .el-input.is-disabled .el-input__inner {
+    background-color: #f5f7fa;
+    border-color: #e4e7ed;
+    color: #606266;
+    cursor: not-allowed;
+  }
+  .el-textarea.is-disabled .el-textarea__inner {
+    background-color: #f5f7fa;
     border-color: #e4e7ed;
     color: #606266;
     cursor: not-allowed;
@@ -465,7 +469,7 @@ export default {
         this.form.phone = res.result.user.telNumber;
         this.form.mobilePhone = res.result.user.phoneNumber;
         this.form.sex = res.result.user.sex;
-        this.form.roleIds = res.result.roles;
+        this.form.roleIds = res.result.roleId;
         this.form.code = res.result.user.organizationCode;
         this.form.deptCode = res.result.user.deptCode;
       });

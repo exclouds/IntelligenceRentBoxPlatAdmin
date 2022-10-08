@@ -17,13 +17,7 @@
               </el-col>
               <el-col :span="4">
                 <el-form-item label="" prop="" label-width="20px">
-                  <el-button
-                    type="primary"
-                    size="mini"
-                    @click="
-                      onSearchBefore();
-                      getInfo();
-                    "
+                  <el-button type="primary" size="mini" @click="getInfo()"
                     >搜索</el-button
                   >
                 </el-form-item>
@@ -43,10 +37,9 @@
                   <el-form-item label="单号：" prop="billNo">
                     <el-input
                       size="mini"
-                      maxlength="10"
                       v-model="box.billNo"
                       placeholder=""
-                      disabled
+                      readonly
                     ></el-input>
                   </el-form-item>
                 </el-col>
@@ -107,7 +100,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <!-- <el-row>
                 <el-col :span="8">
                   <el-form-item label="是否库存：" prop="isInStock">
                     <el-switch v-model="box.isInStock" disabled></el-switch>
@@ -126,19 +119,8 @@
                     />
                   </el-form-item>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <el-row>
-                <el-col :span="8">
-                  <el-form-item label="租金：" prop="sellingPrice">
-                    <el-input
-                      size="mini"
-                      maxlength="10"
-                      v-model="box.sellingPrice"
-                      placeholder=""
-                      disabled
-                    ></el-input>
-                  </el-form-item>
-                </el-col>
                 <el-col :span="16">
                   <el-form-item label="有效时间起止：" prop="effectiveSTime">
                     <el-date-picker
@@ -164,6 +146,18 @@
                 </el-col>
               </el-row>
               <el-row>
+                <el-col :span="8">
+                  <el-form-item label="租金：" prop="sellingPrice">
+                    <el-input
+                      size="mini"
+                      v-model="box.sellingPrice"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
                 <el-col :span="24">
                   <el-form-item label="备注：" prop="remarks">
                     <el-input
@@ -172,8 +166,64 @@
                       :autosize="{ minRows: 5, maxRows: 5 }"
                       v-model="box.remarks"
                       placeholder=""
-                      disabled
+                      readonly
                     ></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="制单人：" prop="createName">
+                    <el-input
+                      size="mini"
+                      v-model="box.createName"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="公司：" prop="company">
+                    <el-input
+                      size="mini"
+                      v-model="box.company"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="电话：" prop="telNumber">
+                    <el-input
+                      size="mini"
+                      maxlength="13"
+                      v-model="box.telNumber"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                    <!-- <el-tag
+                      placeholder=""
+                      style="width: 100%; height: 28px"
+                      v-text="box.telNumber"
+                    ></el-tag> -->
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="手机：" prop="phoneNumber">
+                    <el-input
+                      size="mini"
+                      maxlength="13"
+                      v-model="box.phoneNumber"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                    <!-- <el-tag
+                      v-text="box.phoneNumber"
+                      placeholder=""
+                      style="width: 100%; height: 28px"
+                    ></el-tag> -->
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -203,13 +253,7 @@
               </el-col>
               <el-col :span="4">
                 <el-form-item label="" prop="" label-width="20px">
-                  <el-button
-                    type="primary"
-                    size="mini"
-                    @click="
-                      onSearchBefore();
-                      getInfo();
-                    "
+                  <el-button type="primary" size="mini" @click="getInfo()"
                     >搜索</el-button
                   >
                 </el-form-item>
@@ -229,10 +273,9 @@
                   <el-form-item label="单号：" prop="billNo">
                     <el-input
                       size="mini"
-                      maxlength="10"
                       v-model="tenant.billNo"
                       placeholder=""
-                      disabled
+                      readonly
                     ></el-input>
                   </el-form-item>
                 </el-col>
@@ -305,10 +348,9 @@
                   <el-form-item label="希望成交价：" prop="hopePrice">
                     <el-input
                       size="mini"
-                      maxlength="10"
                       v-model="tenant.hopePrice"
                       placeholder=""
-                      disabled
+                      readonly
                     ></el-input>
                   </el-form-item>
                 </el-col>
@@ -322,8 +364,64 @@
                       :autosize="{ minRows: 5, maxRows: 5 }"
                       v-model="tenant.remarks"
                       placeholder=""
-                      disabled
+                      readonly
                     ></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="制单人：" prop="createName">
+                    <el-input
+                      size="mini"
+                      v-model="tenant.createName"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="公司：" prop="company">
+                    <el-input
+                      size="mini"
+                      v-model="tenant.company"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label="电话：" prop="telNumber">
+                    <el-input
+                      size="mini"
+                      maxlength="13"
+                      v-model="tenant.telNumber"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                    <!-- <el-tag
+                      v-text="tenant.telNumber"
+                      placeholder=""
+                      style="width: 100%; height: 28px"
+                    ></el-tag> -->
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label="手机：" prop="phoneNumber">
+                    <el-input
+                      size="mini"
+                      maxlength="13"
+                      v-model="tenant.phoneNumber"
+                      placeholder=""
+                      readonly
+                    ></el-input>
+                    <!-- <el-tag
+                      v-text="tenant.phoneNumber"
+                      placeholder=""
+                      style="width: 100%; height: 28px"
+                    ></el-tag> -->
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -431,7 +529,6 @@
 }
 </style>
 <script>
-import { tableMixin } from "mixin/commTable";
 import boxDetailsIndex from "./boxDetailsIndex";
 import {
   getBusinessConfirmInfo,
@@ -442,14 +539,12 @@ import { checkBtnPeimission, RegisterReview } from "utils/btnRole";
 import { getSiteList } from "api/publicBase/Combox";
 export default {
   name: "boxReleaseQueryIndex",
-  mixins: [tableMixin],
   components: {
     "Box-Details": boxDetailsIndex,
   },
   data() {
     return {
       RegisterReview,
-      tableList: [],
       search: {
         id: "",
         boxBillNO: "",
@@ -463,13 +558,17 @@ export default {
         startStation: "",
         endStation: "",
         returnStation: "",
-        isInStock: undefined,
-        predictTime: undefined,
+        //isInStock: undefined,
+        //predictTime: undefined,
         effectiveSTime: undefined,
         effectiveETime: undefined,
         sellingPrice: 0,
         remarks: "",
         creatorUserId: 0,
+        createName: "",
+        company: "",
+        telNumber: "",
+        phoneNumber: "",
       },
       tenant: {
         id: "",
@@ -482,6 +581,10 @@ export default {
         line: "",
         remarks: "",
         creatorUserId: 0,
+        createName: "",
+        company: "",
+        telNumber: "",
+        phoneNumber: "",
       },
       qyz: [],
       mdz: [],
@@ -515,42 +618,57 @@ export default {
       getBusinessConfirmInfo(data).then((res) => {
         if (res.result.msg != null && res.result.msg != "") {
           warnMsg(res.result.msg);
-        } else {
-          if (res.result.boxInfo != null) {
-            this.box.id = res.result.boxInfo.id;
-            this.box.billNo = res.result.boxInfo.billNO;
-            this.box.startStation = res.result.boxInfo.startStation;
-            this.box.endStation = res.result.boxInfo.endStation;
-            this.box.returnStation = res.result.boxInfo.returnStation;
-            this.box.isInStock = res.result.boxInfo.isInStock;
-            this.box.predictTime = res.result.boxInfo.predictTime;
-            this.box.effectiveSTime = res.result.boxInfo.effectiveSTime;
-            this.box.effectiveETime = res.result.boxInfo.effectiveETime;
-            this.box.sellingPrice = res.result.boxInfo.sellingPrice;
-            this.box.remarks = res.result.boxInfo.remarks;
-            this.box.creatorUserId = res.result.boxInfo.creatorUserId;
-            this.$refs.boxDetailsComp1.search.BoxTenantNO =
-              res.result.boxInfo.billNO;
-            this.$refs.boxDetailsComp1.getTableList();
-          }
-          if (res.result.tenantInfo != null) {
-            this.tenant.id = res.result.tenantInfo.id;
-            this.tenant.billNo = res.result.tenantInfo.billNO;
-            this.tenant.startStation = res.result.tenantInfo.startStation;
-            this.tenant.endStation = res.result.tenantInfo.endStation;
-            this.tenant.effectiveSTime = res.result.tenantInfo.effectiveSTime;
-            this.tenant.effectiveETime = res.result.tenantInfo.effectiveETime;
-            this.tenant.hopePrice = res.result.tenantInfo.hopePrice;
-            this.tenant.remarks = res.result.tenantInfo.remarks;
-            this.tenant.creatorUserId = res.result.tenantInfo.creatorUserId;
-            this.$refs.boxDetailsComp2.search.BoxTenantNO =
-              res.result.tenantInfo.billNO;
-            this.$refs.boxDetailsComp2.getTableList();
-          }
+        }
+        if (res.result.boxInfo != null) {
+          this.box.id = res.result.boxInfo.id;
+          this.box.billNo = res.result.boxInfo.billNO;
+          this.box.startStation = res.result.boxInfo.startStation;
+          this.box.endStation = res.result.boxInfo.endStation;
+          this.box.returnStation = res.result.boxInfo.returnStation;
+          //this.box.isInStock = res.result.boxInfo.isInStock;
+          //this.box.predictTime = res.result.boxInfo.predictTime;
+          this.box.effectiveSTime = res.result.boxInfo.effectiveSTime;
+          this.box.effectiveETime = res.result.boxInfo.effectiveETime;
+          this.box.sellingPrice = res.result.boxInfo.sellingPrice;
+          this.box.remarks = res.result.boxInfo.remarks;
+          this.box.creatorUserId = res.result.boxInfo.creatorUserId;
+          this.box.createName = res.result.createName;
+          this.box.company = res.result.company;
+          this.box.telNumber = res.result.telNumber;
+          this.box.phoneNumber = res.result.phoneNumber;
+          this.$refs.boxDetailsComp1.search.BoxTenantNO =
+            res.result.boxInfo.billNO;
+          this.$refs.boxDetailsComp1.getTableList();
+        }
+        if (res.result.tenantInfo != null) {
+          this.tenant.id = res.result.tenantInfo.id;
+          this.tenant.billNo = res.result.tenantInfo.billNO;
+          this.tenant.startStation = res.result.tenantInfo.startStation;
+          this.tenant.endStation = res.result.tenantInfo.endStation;
+          this.tenant.effectiveSTime = res.result.tenantInfo.effectiveSTime;
+          this.tenant.effectiveETime = res.result.tenantInfo.effectiveETime;
+          this.tenant.hopePrice = res.result.tenantInfo.hopePrice;
+          this.tenant.remarks = res.result.tenantInfo.remarks;
+          this.tenant.creatorUserId = res.result.tenantInfo.creatorUserId;
+          this.tenant.createName = res.result.createName;
+          this.tenant.company = res.result.company;
+          this.tenant.telNumber = res.result.telNumber;
+          this.tenant.phoneNumber = res.result.phoneNumber;
+          this.$refs.boxDetailsComp2.search.BoxTenantNO =
+            res.result.tenantInfo.billNO;
+          this.$refs.boxDetailsComp2.getTableList();
         }
       });
     },
     save(flag) {
+      if (this.box.billNo === "") {
+        warnMsg("请查询箱东提单信息");
+        return;
+      }
+      if (this.tenant.billNo === "") {
+        warnMsg("请查询租客提单信息");
+        return;
+      }
       this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
           let data = {
@@ -569,9 +687,23 @@ export default {
         }
       });
     },
+    onRouter() {
+      if (this.$route.query.bNo && this.$route.query.tNo) {
+        //加层判断 防止重复查询产生的提示
+        if (
+          this.search.boxBillNO !== this.$route.query.bNo ||
+          this.search.tenantBillNO !== this.$route.query.tNo
+        ) {
+          this.search.boxBillNO = this.$route.query.bNo;
+          this.search.tenantBillNO = this.$route.query.tNo;
+          this.getInfo();
+        }
+      }
+    },
   },
   created() {
     this.setComBox();
+    this.onRouter();
   },
 };
 </script>

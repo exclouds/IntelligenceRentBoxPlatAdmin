@@ -1,7 +1,7 @@
 <template>
   <div class="createUser">
     <el-dialog
-      :title="'租客发布信息审批'"
+      :title="'租客发布信息'"
       v-dialogDrag
       :visible.sync="windowShow"
       width="1200px"
@@ -22,10 +22,9 @@
                 <el-form-item label="单号：" prop="billNo">
                   <el-input
                     size="mini"
-                    maxlength="10"
                     v-model="form.billNo"
                     placeholder="请输入单号"
-                    disabled
+                    readonly
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -101,10 +100,9 @@
                 <el-form-item label="租金：" prop="hopePrice">
                   <el-input
                     size="mini"
-                    maxlength="10"
                     v-model="form.hopePrice"
                     placeholder="请输入租金"
-                    disabled
+                    readonly
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -126,6 +124,52 @@
                   </el-select>
                 </el-form-item>
               </el-col>
+              <el-col :span="12">
+                <el-form-item label="制单人：" prop="createName">
+                  <el-input
+                    size="mini"
+                    v-model="form.createName"
+                    placeholder=""
+                    readonly
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="公司：" prop="company">
+                  <el-input
+                    size="mini"
+                    v-model="form.company"
+                    placeholder=""
+                    readonly
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="电话：" prop="telNumber">
+                  <el-input
+                    size="mini"
+                    maxlength="13"
+                    v-model="form.telNumber"
+                    placeholder=""
+                    readonly
+                  ></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="手机：" prop="phoneNumber">
+                  <el-input
+                    size="mini"
+                    maxlength="13"
+                    v-model="form.phoneNumber"
+                    placeholder=""
+                    readonly
+                  ></el-input>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
@@ -136,21 +180,25 @@
                     :autosize="{ minRows: 5, maxRows: 5 }"
                     v-model="form.remarks"
                     placeholder=""
-                    disabled
+                    readonly
                   ></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="24">
-                <el-form-item label="审批意见：" prop="verifyRem">
+                <el-form-item
+                  label="审批意见："
+                  prop="verifyRem"
+                  v-if="pageType != 'recomInfo'"
+                >
                   <el-input
                     type="textarea"
                     :maxlength="500"
                     :autosize="{ minRows: 5, maxRows: 5 }"
                     v-model="form.verifyRem"
                     placeholder=""
-                    :disabled="pageType == 'info'"
+                    :readonly="pageType == 'info'"
                   ></el-input>
                 </el-form-item>
               </el-col>
@@ -280,6 +328,12 @@
     color: #606266;
     cursor: not-allowed;
   }
+  .el-textarea.is-disabled .el-textarea__inner {
+    background-color: #f5f7fa;
+    border-color: #e4e7ed;
+    color: #606266;
+    cursor: not-allowed;
+  }
 }
 </style>
 <script>
@@ -326,6 +380,10 @@ export default {
           line: "",
           remarks: "",
           verifyRem: "",
+          createName: "",
+          company: "",
+          telNumber: "",
+          phoneNumber: "",
         };
         this.filelist = [];
         this.treeComp.choosedTreeNodeId = [];
@@ -348,6 +406,10 @@ export default {
         line: "",
         remarks: "",
         verifyRem: "",
+        createName: "",
+        company: "",
+        telNumber: "",
+        phoneNumber: "",
       },
       rules: {},
       ZDs: [],
@@ -417,16 +479,20 @@ export default {
     //获取单个用户
     getTenantReleaseInfoById(boxId) {
       getTenantReleaseInfoById({ id: boxId }).then((res) => {
-        this.form.id = res.result.id;
-        this.form.billNo = res.result.billNO;
-        this.form.startStation = res.result.startStation;
-        this.form.endStation = res.result.endStation;
-        this.form.effectiveSTime = res.result.effectiveSTime;
-        this.form.effectiveETime = res.result.effectiveETime;
-        this.form.hopePrice = res.result.hopePrice;
-        this.form.line = res.result.line;
-        this.form.remarks = res.result.remarks;
-        this.form.verifyRem = res.result.verifyRem;
+        this.form.id = res.result.tenant.id;
+        this.form.billNo = res.result.tenant.billNO;
+        this.form.startStation = res.result.tenant.startStation;
+        this.form.endStation = res.result.tenant.endStation;
+        this.form.effectiveSTime = res.result.tenant.effectiveSTime;
+        this.form.effectiveETime = res.result.tenant.effectiveETime;
+        this.form.hopePrice = res.result.tenant.hopePrice;
+        this.form.line = res.result.tenant.line;
+        this.form.remarks = res.result.tenant.remarks;
+        this.form.verifyRem = res.result.tenant.verifyRem;
+        this.form.createName = res.result.createName;
+        this.form.company = res.result.company;
+        this.form.telNumber = res.result.telNumber;
+        this.form.phoneNumber = re.result.phoneNumber;
       });
     },
     //提交

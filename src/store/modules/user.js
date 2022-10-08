@@ -1,6 +1,6 @@
-import {Decrypt,Encrypt} from '@/utils/crypto'
-import {loginByEmail,logout,getInfo} from 'api/login';
-import {setCookie,getCookie,delCookie,clearAllCookie} from 'utils/cookie';
+import { Decrypt, Encrypt } from '@/utils/crypto'
+import { loginByEmail, logout, getInfo } from 'api/login';
+import { setCookie, getCookie, delCookie, clearAllCookie } from 'utils/cookie';
 const user = {
   state: {
     user: '',
@@ -9,9 +9,9 @@ const user = {
     code: '',
     gsWorkNo: '',      //公司工号
     jtWorkNo: '',      //集团工号
-    token: getCookie('Abp.AuthToken'), 
-    tenantId:getCookie('Abp.TenantId'),     //租户
-    permission:JSON.parse(localStorage.getItem('permission')),  //权限码
+    token: getCookie('Abp.AuthToken'),
+    tenantId: getCookie('Abp.TenantId'),     //租户
+    permission: JSON.parse(localStorage.getItem('permission')),  //权限码
     name: '',
     deptId: '',
     deptName: '',
@@ -24,7 +24,8 @@ const user = {
     setting: {
       articlePlatform: []
     },
-    systemUser: getCookie('Abp.SystemUser')
+    systemUser: getCookie('Abp.SystemUser'),
+    webSocketMsg: ''
   },
 
   mutations: {
@@ -88,6 +89,10 @@ const user = {
     SET_TENANTID: (state, tenantId) => {
       state.tenantId = tenantId
     },
+    // 存储websocket推送的消息
+    SET_WS_MSG: (state, msg) => {
+      state.webSocketMsg = msg
+    }
   },
 
   actions: {
@@ -97,18 +102,18 @@ const user = {
     }, userInfo) {
       userInfo.userName = userInfo.userNameOrEmailAddress.trim();
       userInfo.password = userInfo.password.trim();
-      
+
       return new Promise((resolve, reject) => {
         loginByEmail(userInfo).then(res => {
-          
-          if(res.success) {
+
+          if (res.success) {
             commit('SET_TOKEN', '');
             commit('SET_ROLES', []);
             commit('SET_MENUS', undefined);
             commit('SET_ELEMENTS', undefined);
             //removeToken();
-            
-            setCookie('Abp.AuthToken',res.result.accessToken)
+
+            setCookie('Abp.AuthToken', res.result.accessToken)
             //setToken(res.result.accessToken);
 
             commit('SET_TOKEN', res.result.accessToken);
@@ -121,11 +126,11 @@ const user = {
     },
 
     //登陆(单点)
-    setUser({commit}, userInfo) {
-      commit('SET_GSWORKNO',userInfo.gsWorkNo)
-      commit('SET_JTWORKNO',userInfo.jtWorkNo)
-      commit('SET_ID',userInfo.userId)
-      commit('SET_NAME',userInfo.name)
+    setUser({ commit }, userInfo) {
+      commit('SET_GSWORKNO', userInfo.gsWorkNo)
+      commit('SET_JTWORKNO', userInfo.jtWorkNo)
+      commit('SET_ID', userInfo.userId)
+      commit('SET_NAME', userInfo.name)
 
     },
 
@@ -137,14 +142,14 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
           const data = response;
-          localStorage.setItem("permission",JSON.stringify(Object.keys(data.result.auth.grantedPermissions)));
-          commit('SET_PERMISSION',Object.keys(data.result.auth.grantedPermissions))
+          localStorage.setItem("permission", JSON.stringify(Object.keys(data.result.auth.grantedPermissions)));
+          commit('SET_PERMISSION', Object.keys(data.result.auth.grantedPermissions))
           commit('SET_ID', data.id);
           commit('SET_ROLES', 'admin');
           commit('SET_NAME', data.name);
           commit('SET_DEPTID', data.deptId);
           commit('SET_DEPTNANE', data.deptName);
-          commit('SET_TENANTID',data.result.session.tenantId)
+          commit('SET_TENANTID', data.result.session.tenantId)
           commit('SET_AVATAR', 'https://www.gravatar.com/avatar/2714bbb24bb92e796927dd705d769fdb?s=180&d=identicon');
           commit('SET_INTRODUCTION', data.description);
           //commit('SET_MENUS', data.menus);
@@ -199,14 +204,14 @@ const user = {
       commit
     }) {
       return new Promise(resolve => {
-        
+
         //删除租户cookie
         //delCookie('tenantId')
         //清除localStorage
         localStorage.clear();
         //清除用户cookie
         //removeToken();
-        
+
         delCookie('Abp.AuthToken')
         delCookie('Abp.TenantId')
         //console.log('bbb',getCookie('Abp.AuthToken'))
@@ -217,7 +222,7 @@ const user = {
         commit('SET_MENUS', undefined);
         commit('SET_ELEMENTS', undefined);
         commit('SET_PERMISSION_MENUS', undefined);
-        
+
         resolve();
       });
     },

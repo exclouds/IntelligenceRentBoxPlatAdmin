@@ -126,12 +126,12 @@
           show-overflow-tooltip
           width="120"
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           prop="isInStock"
           label="是否库存"
           show-overflow-tooltip
-          width="100"
+          width="80"
         >
           <template slot-scope="scope">
             {{ scope.row.IsInStock ? "是" : "否" }}
@@ -147,7 +147,7 @@
           <template slot-scope="scope">
             {{ scope.row.predictTime | parseTime("{y}-{m}-{d} {h}:{i}:{s}") }}
           </template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           align="center"
           prop="effectiveSTime"
@@ -179,7 +179,7 @@
           prop="sellingPrice"
           label="租金"
           show-overflow-tooltip
-          width="190"
+          width="100"
         ></el-table-column>
         <el-table-column
           align="center"
@@ -187,6 +187,34 @@
           label="所属路线"
           show-overflow-tooltip
           width="80"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="createName"
+          label="制单人"
+          show-overflow-tooltip
+          width="80"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="company"
+          label="公司"
+          show-overflow-tooltip
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="telNumber"
+          label="电话"
+          show-overflow-tooltip
+          width="120"
+        ></el-table-column>
+        <el-table-column
+          align="center"
+          prop="phoneNumber"
+          label="手机"
+          show-overflow-tooltip
+          width="110"
         ></el-table-column>
         <!-- <el-table-column
           align="center"
@@ -224,7 +252,12 @@
           show-overflow-tooltip
           min-width="80"
         ></el-table-column>
-        <el-table-column align="center" label="操作" width="140px">
+        <el-table-column
+          align="center"
+          label="操作"
+          width="140px"
+          fixed="right"
+        >
           <template slot-scope="scope">
             <div
               class="tableBtn"
