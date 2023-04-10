@@ -492,7 +492,7 @@ export default {
         this.form.createName = res.result.createName;
         this.form.company = res.result.company;
         this.form.telNumber = res.result.telNumber;
-        this.form.phoneNumber = re.result.phoneNumber;
+        this.form.phoneNumber = res.result.phoneNumber;
       });
     },
     //提交

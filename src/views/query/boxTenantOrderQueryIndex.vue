@@ -1,9 +1,9 @@
 <template>
-  <div class="app-container userMng">
+  <div class="app-container userMng"  v-loading="formloading">
     <el-row>
       <el-col :span="12">
         <el-card style="height: calc(100%)">
-          <el-form size="mini" label-width="100px">
+          <el-form size="mini" label-width="100px" >
             <el-row style="padding-bottom: 10px">
               <el-col :span="8">
                 <el-form-item label="箱东单号：" prop="boxBillNO">
@@ -545,6 +545,7 @@ export default {
   data() {
     return {
       RegisterReview,
+      formloading:false,
       search: {
         id: "",
         boxBillNO: "",
@@ -660,7 +661,7 @@ export default {
         }
       });
     },
-    save(flag) {
+    save(flag) {    
       if (this.box.billNo === "") {
         warnMsg("请查询箱东提单信息");
         return;
@@ -681,8 +682,13 @@ export default {
             sellingPrice: this.form.sellingPrice,
             purchasePrice: this.form.purchasePrice,
           };
+          this.formloading=true;
           updateBusinessConfirmInfo(data).then((res) => {
+            this.formloading=false;
             successMsg("确认成功");
+          })
+          .catch(err=>{
+             this.formloading=false;
           });
         }
       });

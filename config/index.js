@@ -13,7 +13,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/DBService': {
-        target: 'http://172.17.142.205:1920',
+        target: 'http://47.103.117.243:1920',
         pathRewrite: {
           '^/DBService': '/DBService'
         },

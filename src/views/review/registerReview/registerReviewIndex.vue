@@ -165,7 +165,7 @@
           v-if="search.IsVerify"
         >
           <template slot-scope="scope">
-            {{ scope.row.IsLockoutEnabled ? "审核未通过" : "审核通过" }}
+            {{ scope.row.isLockoutEnabled ? "审核未通过" : "审核通过" }}
           </template>
         </el-table-column>
 

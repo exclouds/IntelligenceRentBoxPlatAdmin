@@ -130,3 +130,12 @@ export function LockUser(obj) {
     data: obj,
   });
 }
+
+//修改用户
+export function CheckUsrInfo(obj) {
+  return fetch({
+    url: '/DBService/api/services/app/User/CheckUsrInfo',
+    method: 'post',
+    data: obj
+  });
+}

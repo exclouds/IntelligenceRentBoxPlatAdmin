@@ -234,7 +234,7 @@
 import treeSelect from "components/treeSelect/treeSelect";
 import tree from "components/tree/tree";
 import { getRoleSelectList } from "api/user/roles";
-import { createUser, updateUser, getUserInfoById } from "api/user/user";
+import { createUser, CheckUsrInfo, getUserInfoById } from "api/user/user";
 import { GetDeptUnitList, getOrganizatonByType } from "api/user/organization";
 import { mobile, telephone, email } from "utils/validate";
 import { warnMsg, successMsg } from "utils/messageBox";
@@ -503,7 +503,7 @@ export default {
             });
           }
           if (this.pageType == "update") {
-            if (this.form.VerifyRem === "") {
+            if (this.form.VerifyRem === "" || this.form.VerifyRem === null || this.form.VerifyRem === undefined ) {
               if (flag) {
                 this.form.VerifyRem = "审批通过";
               } else {
@@ -511,28 +511,44 @@ export default {
                 return;
               }
             }
-            let data = {
-              user: {
-                id: this.form.id,
-                name: this.form.realName,
-                surname: this.form.companyJobNum, //工号
-                companyWorkNo: this.form.groupJobNum,
-                userName: this.form.userName,
-                emailAddress: this.form.email,
-                phoneNumber: this.form.mobilePhone,
-                telNumber: this.form.phone,
-                sex: this.form.sex,
-                OrganizationCode: this.form.code,
-                DeptCode: this.form.deptCode,
+            // let data = {
+            // //   user: {
+            // //     id: this.form.id,
+            // //     name: this.form.realName,
+            // //     surname: this.form.companyJobNum, //工号
+            // //     companyWorkNo: this.form.groupJobNum,
+            // //     userName: this.form.userName,
+            // //     emailAddress: this.form.email,
+            // //     phoneNumber: this.form.mobilePhone,
+            // //     telNumber: this.form.phone,
+            // //     sex: this.form.sex,
+            // //     OrganizationCode: this.form.code,
+            // //     DeptCode: this.form.deptCode,
+            // //     IsVerify: true,
+            // //     VerifyRem: this.form.VerifyRem,
+            // //     IsActive: flag,
+            // //   },
+            // //   //dpts: this.$refs.treeComp.$refs.tree.getCheckedNodes(true, false).map(item => {return {id: item.nodeId.toString()}}),
+            // //   dpts: [],
+            // //   roles: this.form.roleIds,
+            // // };
+            // // updateUser(data).then((res) => {
+            // //   successMsg("审批成功");
+            // //   this.windowShow = false;
+            // //   this.$emit("on-save-success");
+            // // });
+          
+            //   //dpts: this.$refs.treeComp.$refs.tree.getCheckedNodes(true, false).map(item => {return {id: item.nodeId.toString()}}),
+            //   dpts: [],
+            //   roles: this.form.roleIds,
+            // };
+              let data =  {
+                Id: this.form.id,              
                 IsVerify: true,
-                VerifyRem: this.form.VerifyRem,
-                IsActive: flag,
-              },
-              //dpts: this.$refs.treeComp.$refs.tree.getCheckedNodes(true, false).map(item => {return {id: item.nodeId.toString()}}),
-              dpts: [],
-              roles: this.form.roleIds,
-            };
-            updateUser(data).then((res) => {
+                VerifyRem: this.form.VerifyRem , 
+                IsActive: flag          
+              };
+            CheckUsrInfo(data).then((res) => {
               successMsg("审批成功");
               this.windowShow = false;
               this.$emit("on-save-success");

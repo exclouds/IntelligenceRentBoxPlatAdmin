@@ -153,7 +153,7 @@ export const asyncRouterMap = [
         meta: {
           title: '国家资料',
           icon: '个人中心',
-          //roles: ['root.bd.ggxx.gj']
+          roles: ['Customs.BaseCountry']
         },
       },
       {
@@ -164,7 +164,7 @@ export const asyncRouterMap = [
         meta: {
           title: '站点维护',
           icon: '个人中心',
-          //roles: ['root.bd.ggxx.gj']
+          roles: ['Customs.SiteTable']
         },
       },
       {
@@ -175,7 +175,7 @@ export const asyncRouterMap = [
         meta: {
           title: '路线维护',
           icon: '个人中心',
-          //roles: ['root.bd.ggxx.gj']
+          roles: ['Customs.CountryLine']
         },
       },
       {
@@ -186,7 +186,7 @@ export const asyncRouterMap = [
         meta: {
           title: '站点路线维护',
           icon: '个人中心',
-          //roles: ['root.bd.ggxx.gj']
+          roles: ['Customs.LinSite']
         },
       },
     ]
@@ -212,7 +212,7 @@ export const asyncRouterMap = [
           title: '注册信息审核',
           icon: '个人客户',
           keepAlive: true,
-          //roles: ['Customs.RegisterReview']
+          roles: ['Customs.RegisterCheck']
         },
         //btn: RegisterReview
       },
@@ -224,7 +224,7 @@ export const asyncRouterMap = [
           title: '箱东发布审核',
           icon: '个人客户',
           keepAlive: true,
-          //roles: ['Customs.RegisterReview']
+          roles: ['Customs.XDBoxCheck']
         },
         //btn: RegisterReview
       },
@@ -236,7 +236,7 @@ export const asyncRouterMap = [
           title: '租客发布审核',
           icon: '个人客户',
           keepAlive: true,
-          //roles: ['Customs.RegisterReview']
+          roles: ['Customs.ZKTenantCheck']
         },
         //btn: RegisterReview
       },
@@ -261,7 +261,7 @@ export const asyncRouterMap = [
           title: '船东信息查询',
           icon: '个人客户',
           keepAlive: true,
-          //roles: ['Customs.BusinessData']
+          roles: ['Customs.BoxRelease']
         },
         //btn: busdata
       },
@@ -273,7 +273,7 @@ export const asyncRouterMap = [
           title: '租客信息查询',
           icon: '个人客户',
           keepAlive: true,
-          //roles: ['Customs.SpecialFee']
+          roles: ['Customs.TenantRelease']
         },
         //btn: specialfee
       },
@@ -285,7 +285,7 @@ export const asyncRouterMap = [
           title: '提单信息确认',
           icon: '个人客户',
           keepAlive: true,
-          //roles: ['Customs.SpecialFee']
+          roles: ['Customs.BoxTenantOrder']
         },
         //btn: specialfee
       },
@@ -297,7 +297,7 @@ export const asyncRouterMap = [
           title: '智能推荐',
           icon: '个人客户',
           keepAlive: true,
-          //roles: ['Customs.SpecialFee']
+          roles: ['Customs.InterRecomQuery']
         },
         //btn: specialfee
       },
@@ -321,7 +321,7 @@ export const asyncRouterMap = [
           title: '客服上线',
           icon: '个人客户',
           keepAlive: true,
-          //roles: ['Customs.SpecialFee']
+          roles: ['Customs.ImChatServer']
         },
         //btn: specialfee
       },

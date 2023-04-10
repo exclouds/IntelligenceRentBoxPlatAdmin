@@ -322,9 +322,10 @@
           @click="save(false)"
           size="small"
           v-if="pageType == 'update'"
+          :loading="btnloading"
           >不通过</el-button
         >
-        <el-button @click="windowShow = false" size="small">取 消</el-button>
+        <el-button @click="windowShow = false" size="small" :loading="btnloading">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -430,6 +431,7 @@ export default {
         };
         this.filelist = [];
         this.treeComp.choosedTreeNodeId = [];
+        this.btnloading=false;
         this.$emit("on-show-change", newValue);
       }
     },
@@ -438,6 +440,7 @@ export default {
     return {
       pageType: "", //insert update
       windowShow: this.pshow,
+      btnloading:false,
       form: {
         id: "",
         billNo: "",
@@ -563,10 +566,15 @@ export default {
               verifyRem: this.form.verifyRem,
               isEnable: flag,
             };
+            this.btnloading=true;
             updateBoxReleaseInfo(data).then((res) => {
               successMsg("审批成功");
-              this.windowShow = false;
-              this.$emit("on-save-success");
+               this.btnloading=false;
+               this.windowShow = false;             
+               this.$emit("on-save-success");
+            })
+            .catch(err=>{
+              this.btnloading=false;
             });
           }
         }
