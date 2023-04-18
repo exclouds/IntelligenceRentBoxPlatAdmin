@@ -72,18 +72,20 @@
             <el-form-item label="所属角色：" prop="roleIds">
               <!-- <el-input v-model="form.userName" placeholder="请选择所属角色"></el-input> -->
               <el-select
-                v-model="form.roleIds"
+                v-model="form.userNature"
                 collapse-tags
                 placeholder=""
                 style="width: 100%"
                 disabled
               >
-                <el-option
+            <el-option :value="0" label="租客"></el-option>
+            <el-option :value="1" label="箱东"></el-option>
+                <!-- <el-option
                   v-for="item in roleList"
                   :key="item.id"
                   :label="item.displayName"
                   :value="item.id"
-                ></el-option>
+                ></el-option> -->
               </el-select>
             </el-form-item>
           </el-col>
@@ -308,6 +310,7 @@ export default {
         buAuthority: [],
         insideBUAuthority: [],
         regionAuthority: [],
+        userNature:0,
       },
       rules: {
         // realName: [
@@ -468,8 +471,9 @@ export default {
         this.form.email = res.result.user.emailAddress;
         this.form.phone = res.result.user.telNumber;
         this.form.mobilePhone = res.result.user.phoneNumber;
-        this.form.sex = res.result.user.sex;
-        this.form.roleIds = res.result.roleId;
+        this.form.sex = res.result.user.sex;      
+        this.form.userNature = res.result.user.userNature;
+         this.form.roleIds = res.result.roleId;
         this.form.code = res.result.user.organizationCode;
         this.form.deptCode = res.result.user.deptCode;
       });
