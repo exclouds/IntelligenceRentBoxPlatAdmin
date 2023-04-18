@@ -258,7 +258,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/query/boxReleaseQueryIndex').then(m => m.default),
         name: 'boxReleaseQueryIndex',
         meta: {
-          title: '船东信息查询',
+          title: '箱东信息查询',
           icon: '个人客户',
           keepAlive: true,
           roles: ['Customs.BoxRelease']
