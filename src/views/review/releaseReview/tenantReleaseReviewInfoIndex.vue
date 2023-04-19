@@ -31,11 +31,11 @@
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="起运站：" prop="startStation">
+                <el-form-item label="提箱地：" prop="startStation">
                   <el-select
                     v-model="form.startStation"
                     collapse-tags
-                    placeholder="请选择起运站"
+                    placeholder="请选择提箱地"
                     style="width: 100%"
                     disabled
                   >
@@ -49,11 +49,11 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="目的站：" prop="endStation">
+                <el-form-item label="还箱地：" prop="endStation">
                   <el-select
                     v-model="form.endStation"
                     collapse-tags
-                    placeholder="请选择目的站"
+                    placeholder="请选择还箱地"
                     style="width: 100%"
                     disabled
                   >

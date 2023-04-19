@@ -3,11 +3,11 @@
     <el-form size="mini" label-width="80px">
       <el-row style="margin-bottom: 10px">
         <el-col :span="4">
-          <el-form-item label="起运站：" prop="startStation">
+          <el-form-item label="提箱地：" prop="startStation">
             <big-data-select
               class="cusEnabled"
               :val.sync="search.startStation"
-              placeholder="请选择起运站"
+              placeholder="请选择提箱地"
               style="width: 100%"
               size="mini"
               clearable
@@ -19,7 +19,7 @@
             <!-- <el-select
               v-model="search.startStation"
               collapse-tags
-              placeholder="请选择起运站"
+              placeholder="请选择提箱地"
               style="width: 100%"
               clearable
               filterable
@@ -34,11 +34,11 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="目的站：" prop="endStation">
+          <el-form-item label="还箱地：" prop="endStation">
             <big-data-select
               class="cusEnabled"
               :val.sync="search.endStation"
-              placeholder="请选择目的站"
+              placeholder="请选择还箱地"
               style="width: 100%"
               size="mini"
               clearable
@@ -50,7 +50,7 @@
             <!-- <el-select
               v-model="search.endStation"
               collapse-tags
-              placeholder="请选择目的站"
+              placeholder="请选择还箱地"
               style="width: 100%"
               clearable
               filterable
@@ -180,24 +180,24 @@
         <el-table-column
           align="center"
           prop="startStation"
-          label="起运站"
+          label="提箱地"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
           prop="endStation"
-          label="目的站"
+          label="还箱地"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           prop="returnStation"
           label="还箱地"
           show-overflow-tooltip
           width="120"
-        ></el-table-column>
+        ></el-table-column> -->
         <!-- <el-table-column
           align="center"
           prop="isInStock"

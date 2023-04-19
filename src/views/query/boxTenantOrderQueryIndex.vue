@@ -46,7 +46,7 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="起运站：" prop="startStation">
+                  <el-form-item label="提箱地" prop="startStation">
                     <el-select
                       v-model="box.startStation"
                       collapse-tags
@@ -64,7 +64,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="目的站：" prop="endStation">
+                  <el-form-item label="还箱地：" prop="endStation">
                     <el-select
                       v-model="box.endStation"
                       collapse-tags
@@ -81,7 +81,7 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <!-- <el-col :span="8">
                   <el-form-item label="还箱地：" prop="returnStation">
                     <el-select
                       v-model="box.returnStation"
@@ -98,7 +98,7 @@
                       ></el-option>
                     </el-select>
                   </el-form-item>
-                </el-col>
+                </el-col> -->
               </el-row>
               <!-- <el-row>
                 <el-col :span="8">
@@ -282,7 +282,7 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="起运站：" prop="startStation">
+                  <el-form-item label="提箱地" prop="startStation">
                     <el-select
                       v-model="tenant.startStation"
                       collapse-tags
@@ -300,7 +300,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="目的站：" prop="endStation">
+                  <el-form-item label="还箱地：" prop="endStation">
                     <el-select
                       v-model="tenant.endStation"
                       collapse-tags

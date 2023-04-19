@@ -108,14 +108,14 @@
         <el-table-column
           align="center"
           prop="startStation"
-          label="起运站"
+          label="提箱地"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
         <el-table-column
           align="center"
           prop="endStation"
-          label="目的站"
+          label="还箱地"
           show-overflow-tooltip
           width="120"
         ></el-table-column>
