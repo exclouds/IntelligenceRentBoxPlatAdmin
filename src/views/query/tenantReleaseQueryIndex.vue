@@ -284,6 +284,7 @@
             &nbsp;&nbsp;<img
               src="../../../static/img/end.png"
               style="vertical-align: middle"
+              v-if="scope.row.finish===true"
             />
           </template>
         </el-table-column>

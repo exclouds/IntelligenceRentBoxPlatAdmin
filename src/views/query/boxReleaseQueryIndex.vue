@@ -311,8 +311,10 @@
           <template slot-scope="scope">
             <div class="tableBtn" @click="openInfoComp(scope.row)">详情</div>
             &nbsp;&nbsp;<img
+            v-if="scope.row.finish===true"
               src="../../../static/img/end.png"
               style="vertical-align: middle"
+              
             />
           </template>
         </el-table-column>
