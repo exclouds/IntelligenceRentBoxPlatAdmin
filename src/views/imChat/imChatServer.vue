@@ -34,11 +34,13 @@ export default {
         //   "&name=" +
         //   this.username;
 
-         this.url =
-          "http://47.103.117.243:1922/#/imServer?id=" +
-          this.userid +
-          "&name=" +
-          this.username;
+        this.url="http://47.103.117.243:1922/customer";
+
+        //  this.url =
+        //   "http://47.103.117.243:1922/#/imServer?id=" +
+        //   this.userid +
+        //   "&name=" +
+        //   this.username;
         
         const mobsf = document.getElementById("mobsf");
         mobsf.setAttribute("src", this.url);
