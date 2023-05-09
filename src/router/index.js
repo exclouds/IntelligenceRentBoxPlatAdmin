@@ -315,7 +315,8 @@ export const asyncRouterMap = [
     children: [
       {
         path: 'imChatServer',
-        component: () => import('@/views/imChat/imChatServer').then(m => m.default),
+        component: () => import('@/views/imChat/customer').then(m => m.default),
+        //component: () => import('@/views/imChat/imChatServer').then(m => m.default),
         name: 'imChatServer',
         meta: {
           title: '客服上线',
